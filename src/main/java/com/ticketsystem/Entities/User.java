@@ -41,4 +41,12 @@ public class User {
                 .password(user.getPassword())
                 .isActive(user.isActive());
     }
+
+    public static User update(User existing, User updated) {
+        existing.setUsername(updated.getUsername());
+        existing.setPassword(updated.getPassword());
+        existing.setRole(updated.getRole());
+        existing.setActive(updated.isActive());
+        return existing;
+    }
 }

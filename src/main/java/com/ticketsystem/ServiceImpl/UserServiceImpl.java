@@ -51,19 +51,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<User> create(User user) {
-        var encodedPassword = passwordEncoder.encode(user.getPassword());
-
-        return userRepository.save(
-                User.from(user)
-                        .role(Role.USER)
-                        .password(encodedPassword)
-                        .isActive(true)
-                        .build()
-        );
-    }
-
-    @Override
     public Mono<AuthResponse> refreshToken(String token) {
         if (token == null || token.isBlank()) {
             return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token is required"));
@@ -77,4 +64,35 @@ public class UserServiceImpl implements UserService {
         return Mono.just(new AuthResponse(newAccessToken, null));
     }
 
+    @Override
+    public Mono<User> create(User user) {
+        var encodedPassword = passwordEncoder.encode(user.getPassword());
+
+        return userRepository.save(
+                User.from(user)
+                        .role(Role.USER)
+                        .password(encodedPassword)
+                        .isActive(true)
+                        .build()
+        );
+    }
+
+    @Override
+    public Mono<User> update(User user) {
+        var encodedPassword = passwordEncoder.encode(user.getPassword());
+        return userRepository.findById(user.getId())
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
+                .flatMap(existingUser -> {
+                    User.update(existingUser, user);
+                    existingUser.setPassword(encodedPassword);
+                    return userRepository.save(existingUser);
+                });
+    }
+
+    @Override
+    public Mono<Void> delete(Long id) {
+        return userRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
+                .flatMap(userRepository::delete);
+    }
 }
