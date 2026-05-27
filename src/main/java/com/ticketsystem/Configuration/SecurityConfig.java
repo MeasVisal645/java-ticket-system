@@ -2,6 +2,7 @@ package com.ticketsystem.Configuration;
 
 import com.ticketsystem.Security.JwtAuthenticationFilter;
 import com.ticketsystem.Utils.JwtUtils;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import java.util.Objects;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final ReactiveUserDetailsService userDetailsService;
     private final JwtUtils jwtUtils;
+    private final Dotenv dotenv;
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
@@ -33,9 +36,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/v1/user/me").hasAnyRole("ROLE_ADMIN", "ROLE_USER")
-                        .pathMatchers("/api/v1/user/**").hasRole("ROLE_ADMIN")
-                        .pathMatchers("api/v1/admin/log").hasRole("ROLE_ADMIN")
+                        .pathMatchers("/api/v1/ticket-comment/**").hasAnyRole("AGENT", "ADMIN")
                         .pathMatchers("/api/v1/auth/**").permitAll()
                         .anyExchange().authenticated()
                 )
@@ -46,7 +47,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("localhost:3000"));
+        config.setAllowedOrigins(List.of(dotenv.get("ORIGIN")));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
