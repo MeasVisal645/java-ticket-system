@@ -36,10 +36,8 @@ public class User {
 
     public static UserBuilder from(User user) {
         return User.builder()
-                .id(user.getId())
                 .username(user.getUsername())
-                .password(user.getPassword())
-                .isActive(user.isActive());
+                .password(user.getPassword());
     }
 
     public static User update(User existing, User updated) {
