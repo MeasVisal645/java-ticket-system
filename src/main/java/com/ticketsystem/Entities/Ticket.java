@@ -1,6 +1,9 @@
 package com.ticketsystem.Entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ticketsystem.Dto.TicketDto;
+import com.ticketsystem.Utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,31 +48,21 @@ public class Ticket {
     @Column(STATUS_COLUMN)
     private String status;
     @Column(CREATED_AT_COLUMN)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;
     @Column(UPDATED_AT_COLUMN)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = DateUtils.class)
     private LocalDateTime updatedAt;
 
-    public static TicketBuilder from(Ticket ticket) {
+    public static TicketBuilder from(TicketDto ticketDto) {
         return Ticket.builder()
-                .id(ticket.getId())
-                .categoryId(ticket.getCategoryId())
-                .ticketNo(ticket.getTicketNo())
-                .subject(ticket.getSubject())
-                .description(ticket.getDescription())
-                .priority(ticket.getPriority())
-                .status(ticket.getStatus());
+                .id(ticketDto.getId())
+                .categoryId(ticketDto.getCategoryId())
+                .ticketNo(ticketDto.getTicketNo())
+                .subject(ticketDto.getSubject())
+                .description(ticketDto.getDescription())
+                .priority(ticketDto.getPriority())
+                .status(ticketDto.getStatus());
     }
 
-    public static Ticket update(Ticket existing, Ticket updated) {
-        existing.setTicketNo(updated.getTicketNo());
-        existing.setCategoryId(updated.getCategoryId());
-        existing.setSubject(updated.getSubject());
-        existing.setDescription(updated.getDescription());
-        existing.setPriority(updated.getPriority());
-        existing.setStatus(updated.getStatus());
-        existing.setUpdatedAt(updated.getUpdatedAt());
-        return existing;
-    }
 }
