@@ -1,6 +1,5 @@
 package com.ticketsystem.Entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ticketsystem.Utils.DateUtils;
 import lombok.AllArgsConstructor;
