@@ -1,5 +1,6 @@
 package com.ticketsystem.Entities;
 
+import com.ticketsystem.Dto.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,18 +32,11 @@ public class Category {
     @Column(IS_ACTIVE_COLUMN)
     private boolean isActive;
 
-    public static CategoryBuilder from(Category category) {
+    public static Category.CategoryBuilder from(CategoryDto categoryDto) {
         return Category.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .description(category.getDescription())
-                .isActive(category.isActive());
-    }
-
-    public static Category update(Category existing, Category updated) {
-        existing.setName(updated.getName());
-        existing.setDescription(updated.getDescription());
-        existing.setActive(updated.isActive());
-        return existing;
+                .id(categoryDto.getId())
+                .name(categoryDto.getName())
+                .description(categoryDto.getDescription())
+                .isActive(categoryDto.isActive());
     }
 }
