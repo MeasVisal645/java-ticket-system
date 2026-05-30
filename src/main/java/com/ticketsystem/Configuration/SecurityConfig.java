@@ -38,6 +38,12 @@ public class SecurityConfig {
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/v1/ticket-comment/**").hasAnyRole("AGENT", "ADMIN")
                         .pathMatchers("/api/v1/auth/**").permitAll()
+                        .pathMatchers(
+                                "/scalar/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/webjars/**"
+                        ).permitAll()
                         .anyExchange().authenticated()
                 )
                 .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
