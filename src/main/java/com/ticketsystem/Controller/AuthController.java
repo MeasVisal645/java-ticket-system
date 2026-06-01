@@ -45,4 +45,11 @@ public class AuthController {
         return userService.refreshToken(refreshToken)
                 .map(tokens -> new ApiResponse<>(HttpStatus.OK, "Success", new AuthResponse(tokens.accessToken(), tokens.refreshToken())));
     }
+
+    @GetMapping("/me")
+    public Mono<ApiResponse<?>> getCurrentUser() {
+        return userService.currentUser()
+                .map(ApiResponse::success);
+    }
+
 }

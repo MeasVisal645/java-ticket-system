@@ -20,6 +20,7 @@ public class User {
     public static final String USERNAME_COLUMN = "username";
     public static final String PASSWORD_COLUMN = "password";
     public static final String ROLE_COLUMN = "role";
+    public static final String IMAGE_KEY_COLUMN = "imageKey";
     public static final String IS_ACTIVE_COLUMN = "isActive";
 
     @Id
@@ -31,19 +32,23 @@ public class User {
     private String password;
     @Column(ROLE_COLUMN)
     private Role role;
+    @Column(IMAGE_KEY_COLUMN)
+    private String imageKey;
     @Column(IS_ACTIVE_COLUMN)
     private boolean isActive;
 
     public static UserBuilder from(User user) {
         return User.builder()
                 .username(user.getUsername())
-                .password(user.getPassword());
+                .password(user.getPassword())
+                .imageKey(user.getImageKey());
     }
 
     public static User update(User existing, User updated) {
         existing.setUsername(updated.getUsername());
         existing.setPassword(updated.getPassword());
         existing.setRole(updated.getRole());
+        existing.setImageKey(updated.getImageKey());
         existing.setActive(updated.isActive());
         return existing;
     }
