@@ -29,6 +29,7 @@ public class Ticket {
     public static final String DESCRIPTION_COLUMN = "description";
     public static final String PRIORITY_COLUMN = "priority";
     public static final String STATUS_COLUMN = "status";
+    public static final String CREATED_BY_COLUMN = "createdBy";
     public static final String CREATED_AT_COLUMN = "createdAt";
     public static final String UPDATED_AT_COLUMN = "updatedAt";
 
@@ -46,7 +47,9 @@ public class Ticket {
     @Column(PRIORITY_COLUMN)
     private Priority priority;
     @Column(STATUS_COLUMN)
-    private String status;
+    private Status status;
+    @Column(CREATED_BY_COLUMN)
+    private String createdBy;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;
@@ -62,7 +65,8 @@ public class Ticket {
                 .subject(ticketDto.getSubject())
                 .description(ticketDto.getDescription())
                 .priority(ticketDto.getPriority())
-                .status(ticketDto.getStatus());
+                .status(Status.valueOf(ticketDto.getStatus()))
+                .createdBy(ticketDto.getCreatedBy());
     }
 
 }
