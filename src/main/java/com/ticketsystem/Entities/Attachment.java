@@ -24,8 +24,6 @@ public class Attachment {
     public static final String TICKET_ID_COLUMN = "ticketId";
     public static final String FILE_NAME_COLUMN = "fileName";
     public static final String FILE_PATH_COLUMN = "filePath";
-    public static final String CONTENT_TYPE_COLUMN = "contentType";
-    public static final String FILE_SIZE_COLUMN = "fileSize";
     public static final String CREATED_AT_COLUMN = "createdAt";
 
     @Id
@@ -37,11 +35,16 @@ public class Attachment {
     private String fileName;
     @Column(FILE_PATH_COLUMN)
     private String filePath;
-    @Column(CONTENT_TYPE_COLUMN)
-    private String contentType;
-    @Column(FILE_SIZE_COLUMN)
-    private Long fileSize;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;
+
+    public static AttachmentBuilder from(Attachment attachment) {
+        return Attachment.builder()
+                .id(attachment.getId())
+                .ticketId(attachment.getTicketId())
+                .fileName(attachment.getFileName())
+                .filePath(attachment.getFilePath())
+                .createdAt(attachment.getCreatedAt());
+    }
 }
