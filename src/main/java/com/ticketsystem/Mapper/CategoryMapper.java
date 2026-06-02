@@ -16,7 +16,7 @@ public class CategoryMapper {
         dto.setId(category.getId());
         dto.setName(category.getName());
         dto.setDescription(category.getDescription());
-        dto.setActive(category.isActive());
+        dto.setIsActive(category.getIsActive());
 
         return dto;
     }
@@ -32,7 +32,7 @@ public class CategoryMapper {
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
-                .isActive(dto.isActive())
+                .isActive(dto.getIsActive())
                 .build();
     }
 }
