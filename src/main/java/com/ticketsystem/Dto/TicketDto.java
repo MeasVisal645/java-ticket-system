@@ -21,7 +21,7 @@ public class TicketDto {
     private String subject;
     private String description;
     private Priority priority;
-    private String status;
+    private Status status;
     private String createdBy;
 
     public static Ticket update(Ticket existing, TicketDto updated) {
@@ -30,7 +30,7 @@ public class TicketDto {
         existing.setSubject(updated.getSubject());
         existing.setDescription(updated.getDescription());
         existing.setPriority(updated.getPriority());
-        existing.setStatus(Status.valueOf(updated.getStatus()));
+        existing.setStatus(updated.getStatus());
         existing.setCreatedBy(updated.getCreatedBy());
         return existing;
     }
