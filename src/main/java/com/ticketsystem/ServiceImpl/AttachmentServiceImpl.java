@@ -27,7 +27,7 @@ public class AttachmentServiceImpl implements AttachmentService {
                 .flatMap(savedAttachment ->
                         file.flatMap(filePart -> {
                             String imageKey =
-                                    "attachment/" + savedAttachment.getId() + "-" + filePart.filename();
+                                    savedAttachment.getId() + "-" + filePart.filename().trim().replaceAll("\\s+", "_");
 
                             return fileService.uploadFile(imageKey, filePart)
                                     .flatMap(filename -> {
