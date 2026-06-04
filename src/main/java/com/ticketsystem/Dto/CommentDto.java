@@ -17,6 +17,7 @@ public class CommentDto {
     private Long ticketId;
     private String comment;
     private String note;
+    private String createdBy;
 
     public static Comment update(Comment existing, CommentDto updated) {
         existing.setComment(updated.getComment());

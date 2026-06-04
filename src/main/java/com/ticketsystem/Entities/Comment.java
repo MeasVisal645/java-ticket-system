@@ -25,7 +25,9 @@ public class Comment {
     public static final String TICKET_ID_COLUMN = "ticketId";
     public static final String COMMENT_COLUMN = "comment";
     public static final String NOTE_COLUMN = "note";
+    public static final String CREATED_BY_COLUMN = "createdBy";
     public static final String CREATED_AT_COLUMN = "createdAt";
+    public static final String UPDATED_AT_COLUMN = "updatedAt";
 
     @Id
     @Column(ID_COLUMN)
@@ -36,9 +38,14 @@ public class Comment {
     private String comment;
     @Column(NOTE_COLUMN)
     private String note;
+    @Column(CREATED_BY_COLUMN)
+    private String createdBy;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;
+    @Column(UPDATED_AT_COLUMN)
+    @JsonSerialize(using = DateUtils.class)
+    private LocalDateTime updatedAt;
 
     public static CommentBuilder from(CommentDto commentDto) {
         return Comment.builder()
@@ -46,6 +53,7 @@ public class Comment {
                 .ticketId(commentDto.getTicketId())
                 .comment(commentDto.getComment())
                 .note(commentDto.getNote());
+//                .createdBy(commentDto.getCreatedBy());
     }
 
 
