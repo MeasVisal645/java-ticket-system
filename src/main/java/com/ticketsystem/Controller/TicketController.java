@@ -1,6 +1,8 @@
 package com.ticketsystem.Controller;
 
 import com.ticketsystem.Dto.TicketDto;
+import com.ticketsystem.Dto.UpdatePriorityRequest;
+import com.ticketsystem.Dto.UpdateStatusRequest;
 import com.ticketsystem.Entities.Priority;
 import com.ticketsystem.Entities.Ticket;
 import com.ticketsystem.Service.TicketService;
@@ -73,4 +75,17 @@ public class TicketController {
                         priority
                 ).map(ApiResponse::success);
     }
+
+    @PatchMapping("/{id}/priority")
+    public Mono<ApiResponse<?>> updatePriority(@PathVariable Long id, @RequestBody UpdatePriorityRequest request) {
+        return ticketService.updatePriority(id, request.priority())
+                .map(ApiResponse::updated);
+    }
+
+    @PatchMapping("/{id}/status")
+    public Mono<ApiResponse<?>> updateStatus(@PathVariable Long id, @RequestBody UpdateStatusRequest request) {
+        return ticketService.updateStatus(id, request.status())
+                .map(ApiResponse::updated);
+    }
+
 }

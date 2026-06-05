@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
                 .flatMap(user -> {
 
-                    if (!user.isActive()) {
+                    if (!user.getIsActive()) {
                         return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "User account is inactive"));
                     }
 

@@ -1,7 +1,9 @@
 package com.ticketsystem.Service;
 
 import com.ticketsystem.Dto.TicketDto;
+import com.ticketsystem.Dto.UpdateStatusRequest;
 import com.ticketsystem.Entities.Priority;
+import com.ticketsystem.Entities.Status;
 import com.ticketsystem.Entities.Ticket;
 import com.ticketsystem.Utils.ApiResponse;
 import com.ticketsystem.Utils.PageResponse;
@@ -21,4 +23,6 @@ public interface TicketService {
     Mono<Void> delete(Long id);
 
     Mono<PageResponse<TicketDto>> findPagination(Integer pageNumber, Integer pageSize, String search, LocalDateTime startDate, LocalDateTime endDate, Priority priority);
+    Mono<TicketDto> updatePriority(Long id, Priority priority);
+    Mono<TicketDto> updateStatus(Long id, Status status);
 }

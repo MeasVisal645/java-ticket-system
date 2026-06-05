@@ -128,5 +128,31 @@ public class TicketServiceImpl implements TicketService {
         );
     }
 
+    @Override
+    @Transactional
+    public Mono<TicketDto> updatePriority(Long id, Priority priority) {
+        return ticketRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found")))
+                .flatMap(existing -> {
+                    existing.setPriority(priority);
+                    existing.setUpdatedAt(LocalDateTime.now());
+                    return ticketRepository.save(existing);
+                })
+                .map(TicketMapper::toDto);
+    }
+
+    @Override
+    @Transactional
+    public Mono<TicketDto> updateStatus(Long id, Status status) {
+        return ticketRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found")))
+                .flatMap(existing -> {
+                    existing.setStatus(status);
+                    existing.setUpdatedAt(LocalDateTime.now());
+                    return ticketRepository.save(existing);
+                })
+                .map(TicketMapper::toDto);
+    }
+
 
 }
