@@ -35,7 +35,7 @@ public class User {
     @Column(IMAGE_KEY_COLUMN)
     private String imageKey;
     @Column(IS_ACTIVE_COLUMN)
-    private boolean isActive;
+    private Boolean isActive;
 
     public static UserBuilder from(User user) {
         return User.builder()
@@ -49,7 +49,7 @@ public class User {
         existing.setPassword(updated.getPassword());
         existing.setRole(updated.getRole());
         existing.setImageKey(updated.getImageKey());
-        existing.setActive(updated.isActive());
+        existing.setIsActive(updated.getIsActive());
         return existing;
     }
 }
