@@ -1,14 +1,12 @@
 package com.ticketsystem.ServiceImpl;
 
 import com.ticketsystem.Dto.TicketDto;
-import com.ticketsystem.Entities.History;
 import com.ticketsystem.Entities.Priority;
 import com.ticketsystem.Entities.Status;
 import com.ticketsystem.Entities.Ticket;
 import com.ticketsystem.Mapper.TicketMapper;
 import com.ticketsystem.Repository.AttachmentRepository;
 import com.ticketsystem.Repository.CommentRepository;
-import com.ticketsystem.Repository.HistoryRepository;
 import com.ticketsystem.Repository.TicketRepository;
 import com.ticketsystem.Service.TicketService;
 import com.ticketsystem.Utils.*;
@@ -18,8 +16,6 @@ import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
