@@ -23,6 +23,7 @@ public class TicketMapper {
         dto.setPriority(ticket.getPriority());
         dto.setStatus(ticket.getStatus());
         dto.setCreatedBy(ticket.getCreatedBy());
+        dto.setCreatedAt(ticket.getCreatedAt());
 
         return dto;
     }
