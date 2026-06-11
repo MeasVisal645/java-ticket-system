@@ -15,6 +15,13 @@ public class UserController {
 
     private UserService userService;
 
+    @GetMapping("/allUsers")
+    public Mono<ApiResponse<?>> findAllUsers() {
+        return userService.FindAllUsers()
+                .collectList()
+                .map(ApiResponse::success);
+    }
+
     @PutMapping("/update/{id}")
     public Mono<ApiResponse<User>> update(@RequestBody User user) {
         return userService.update(user)
