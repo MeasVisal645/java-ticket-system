@@ -18,7 +18,7 @@ public class UserMapper {
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setRole(user.getRole());
-        dto.setImageKey(user.getImageKey());
+//        dto.setImageKey(user.getImageKey());
 
         return dto;
     }
@@ -34,7 +34,7 @@ public class UserMapper {
                 .id(dto.getId())
                 .username(dto.getUsername())
                 .role(dto.getRole())
-                .imageKey(dto.getImageKey())
+//                .imageKey(dto.getImageKey())
                 .build();
     }
 }

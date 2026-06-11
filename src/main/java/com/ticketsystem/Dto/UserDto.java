@@ -15,5 +15,4 @@ public class UserDto {
     private Long id;
     private String username;
     private Role  role;
-    private String imageKey;
 }

@@ -3,6 +3,7 @@ package com.ticketsystem.ServiceImpl;
 import com.ticketsystem.Dto.AuthRequest;
 import com.ticketsystem.Dto.AuthResponse;
 import com.ticketsystem.Dto.UserDto;
+import com.ticketsystem.Dto.UsernameResponse;
 import com.ticketsystem.Entities.Role;
 import com.ticketsystem.Entities.User;
 import com.ticketsystem.Mapper.UserMapper;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -33,42 +35,51 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<AuthResponse> signIn(AuthRequest request) {
-        if (request.username() == null || request.username().isBlank()
-                || request.password() == null || request.password().isBlank()) {
-            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username or password is required"));
-        }
-
-        return userRepository.findByUsername(request.username())
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
+        return userRepository
+                .findByUsername(request.username())
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password")))
                 .flatMap(user -> {
+                    boolean matches = passwordEncoder.matches(
+                                    request.password(),
+                                    user.getPassword());
+                    if (!matches) {
+                        return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
+                    }
 
                     if (!user.getIsActive()) {
                         return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "User account is inactive"));
                     }
 
-                    if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-                        return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
-                    }
+                    String accessToken = jwtUtils.generateAccessToken(user);
+                    String refreshToken = jwtUtils.generateRefreshToken(user);
 
-                    String access = jwtUtils.generateAccessToken(user);
-                    String refresh = jwtUtils.generateRefreshToken(user);
-
-                    return Mono.just(new AuthResponse(access, refresh));
+                    return Mono.just(new AuthResponse(accessToken, refreshToken));
                 });
     }
 
     @Override
-    public Mono<AuthResponse> refreshToken(String token) {
-        if (token == null || token.isBlank()) {
-            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token is required"));
+    public Mono<AuthResponse> refreshToken(String refreshToken) {
+        if (refreshToken == null || refreshToken.isBlank()) {
+            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token required"));
         }
-        if (!jwtUtils.validateToken(token) || !jwtUtils.isRefreshToken(token)) {
+
+        if (!jwtUtils.validateToken(refreshToken)) {
             return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token"));
         }
 
-        String newAccessToken = jwtUtils.refreshAccessToken(token);
+        if (!jwtUtils.isRefreshToken(refreshToken)) {
+            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token"));
+        }
 
-        return Mono.just(new AuthResponse(newAccessToken, null));
+        String username = jwtUtils.extractUsername(refreshToken);
+
+        return userRepository
+                .findByUsername(username)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found")))
+                .map(user -> {
+                    String accessToken = jwtUtils.generateAccessToken(user);
+                    return new AuthResponse(accessToken, null);
+                });
     }
 
     @Override
@@ -77,10 +88,14 @@ public class UserServiceImpl implements UserService {
                 .mapNotNull(SecurityContext::getAuthentication)
                 .map(Authentication::getName)
                 .flatMap(userRepository::findByUsername)
-                .switchIfEmpty(Mono.error(
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
-                ))
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Credentials")))
                 .map(UserMapper::toDto);
+    }
+
+    @Override
+    public Flux<UsernameResponse> FindAllUsers() {
+        return userRepository.findAll()
+                .map(user -> new UsernameResponse(user.getId(), user.getUsername()));
     }
 
     @Override
