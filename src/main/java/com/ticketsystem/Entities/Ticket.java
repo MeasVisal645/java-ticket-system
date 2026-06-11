@@ -66,6 +66,7 @@ public class Ticket {
                 .description(ticketDto.getDescription())
                 .priority(ticketDto.getPriority())
                 .status(ticketDto.getStatus())
-                .createdBy(ticketDto.getCreatedBy());
+                .createdBy(ticketDto.getCreatedBy())
+                .createdAt(ticketDto.getCreatedAt());
     }
 }
