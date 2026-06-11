@@ -44,6 +44,7 @@ public class TicketMapper {
                 .priority(dto.getPriority())
                 .status(dto.getStatus())
                 .createdBy(dto.getCreatedBy())
+                .createdAt(dto.getCreatedAt())
                 .build();
     }
 }
