@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Column;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +25,7 @@ public class TicketDto {
     private Priority priority;
     private Status status;
     private String createdBy;
+    private LocalDateTime createdAt;
 
     public static Ticket update(Ticket existing, TicketDto updated) {
         existing.setTicketNo(updated.getTicketNo());
