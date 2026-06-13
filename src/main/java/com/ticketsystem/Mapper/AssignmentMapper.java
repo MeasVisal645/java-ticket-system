@@ -1,9 +1,7 @@
 package com.ticketsystem.Mapper;
 
 import com.ticketsystem.Dto.AssignmentsDto;
-import com.ticketsystem.Dto.CategoryDto;
 import com.ticketsystem.Entities.Assignments;
-import com.ticketsystem.Entities.Category;
 
 public class AssignmentMapper {
     // Convert from Entity to DTO
@@ -19,6 +17,7 @@ public class AssignmentMapper {
         dto.setTicketId(assignments.getTicketId());
         dto.setAssignBy(assignments.getAssignBy());
         dto.setAssignTo(assignments.getAssignTo());
+        dto.setAssignedAt(assignments.getAssignedAt());
 
         return dto;
     }
@@ -35,6 +34,7 @@ public class AssignmentMapper {
                 .ticketId(dto.getTicketId())
                 .assignBy(dto.getAssignBy())
                 .assignTo(dto.getAssignTo())
+                .assignedAt(dto.getAssignedAt())
                 .build();
     }
 }

@@ -9,5 +9,6 @@ import reactor.core.publisher.Mono;
 @Service
 public interface AttachmentService {
 
+    Mono<Attachment> findByTicketId(Long ticketId);
     Mono<Attachment> create(Attachment attachment, Mono<FilePart> file);
 }

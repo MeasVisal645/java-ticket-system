@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono;
 public interface AttachmentRepository extends R2dbcRepository<Attachment, Long> {
 
     Mono<Void> deleteByTicketId(Long ticketId);
+    Mono<Attachment> findByTicketId(Long ticketId);
 }

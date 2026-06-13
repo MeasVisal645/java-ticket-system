@@ -6,6 +6,7 @@ import com.ticketsystem.Service.AttachmentService;
 import com.ticketsystem.Service.FileService;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.AllArgsConstructor;
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -17,8 +18,12 @@ import java.time.LocalDateTime;
 public class AttachmentServiceImpl implements AttachmentService {
 
     private final AttachmentRepository attachmentRepository;
-    private final Dotenv dotenv;
     private final FileService fileService;
+
+    @Override
+    public Mono<Attachment> findByTicketId(Long ticketId) {
+        return attachmentRepository.findByTicketId(ticketId);
+    }
 
     @Override
     public Mono<Attachment> create(Attachment attachment, Mono<FilePart> file) {

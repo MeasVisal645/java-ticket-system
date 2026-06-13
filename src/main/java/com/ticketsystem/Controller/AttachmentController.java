@@ -19,7 +19,13 @@ public class AttachmentController {
 
     private final AttachmentService attachmentService;
 
-    @PostMapping(value = "ticket/{ticketId}/attachments",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping("/ticket-attachments/{ticketId}")
+    public Mono<ApiResponse<Attachment>> findByTicketId(@PathVariable Long ticketId) {
+        return attachmentService.findByTicketId(ticketId)
+                .map(ApiResponse::success);
+    }
+
+    @PostMapping(value = "/ticket-attachments/create/{ticketId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<ResponseEntity<ApiResponse<Attachment>>> uploadAttachment(@PathVariable Long ticketId, @RequestPart("file") FilePart file) {
         Attachment attachment = new Attachment();
         attachment.setTicketId(ticketId);
