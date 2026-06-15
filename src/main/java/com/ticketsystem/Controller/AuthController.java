@@ -2,16 +2,17 @@ package com.ticketsystem.Controller;
 
 import com.ticketsystem.Dto.AuthRequest;
 import com.ticketsystem.Dto.AuthResponse;
+import com.ticketsystem.Dto.UserDto;
 import com.ticketsystem.Entities.User;
 import com.ticketsystem.Service.UserService;
 import com.ticketsystem.Utils.ApiResponse;
-import com.ticketsystem.Utils.CookieUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,29 +28,39 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public Mono<ResponseEntity<ApiResponse<?>>> signIn(@RequestBody AuthRequest req) {
-        return userService.signIn(req)
+    public Mono<ApiResponse<AuthResponse>> signIn(@RequestBody AuthRequest request, ServerHttpResponse response) {
+        return userService.signIn(request)
                 .map(tokens -> {
-                    AuthResponse response = new AuthResponse(
-                            tokens.accessToken(),
-                            null);
+                    ResponseCookie refreshCookie = ResponseCookie.from(
+                                            "refreshToken",
+                                            tokens.refreshToken())
+                                    .httpOnly(true)
+                                    .secure(true)
+                                    .path("/")
+                                    .maxAge(Duration.ofDays(7))
+                                    .sameSite("Lax")
+                                    .build();
 
-                    return ResponseEntity.ok()
-                            .header(HttpHeaders.SET_COOKIE, CookieUtil.responseCookie(tokens.refreshToken()).toString())
-                            .body(ApiResponse.success(response));
+                    response.addCookie(refreshCookie);
+
+                    return ApiResponse.success(
+                            new AuthResponse(
+                                    tokens.accessToken(),
+                                    null
+                            )
+                    );
                 });
     }
 
     @PostMapping("/refresh")
-    public Mono<ApiResponse<?>> refreshToken(@CookieValue(name = "refreshToken", required = false) String refreshToken) {
+    public Mono<ApiResponse<AuthResponse>> refresh(@CookieValue(name = "refreshToken", required = false) String refreshToken) {
         return userService.refreshToken(refreshToken)
-                .map(tokens -> new ApiResponse<>(HttpStatus.OK, "Success", new AuthResponse(tokens.accessToken(), tokens.refreshToken())));
-    }
-
-    @GetMapping("/me")
-    public Mono<ApiResponse<?>> getCurrentUser() {
-        return userService.currentUser()
                 .map(ApiResponse::success);
     }
 
+    @GetMapping("/me")
+    public Mono<ApiResponse<UserDto>> me() {
+        return userService.currentUser()
+                .map(ApiResponse::success);
+    }
 }
