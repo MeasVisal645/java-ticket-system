@@ -13,4 +13,6 @@ public interface AssignmentService {
     Mono<PageResponse<AssignmentsDto>> findPagination(Integer pageSize, Integer pageNumber, LocalDateTime startDate, LocalDateTime endDate, Long assignTo);
     Mono<PageResponse<AssignmentsDto>> findPaginationByAssignTo(Integer pageSize, Integer pageNumber, LocalDateTime startDate, LocalDateTime endDate);
     Mono<AssignmentsDto> assignTicket(Long ticketId, AssignmentsDto assignmentsDto);
+    Mono<AssignmentsDto> update(AssignmentsDto assignmentsDto);
+    Mono<Void> delete(Long id);
 }

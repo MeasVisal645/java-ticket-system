@@ -3,7 +3,6 @@ package com.ticketsystem.ServiceImpl;
 import com.ticketsystem.Dto.AssignmentsDto;
 import com.ticketsystem.Entities.Assignments;
 import com.ticketsystem.Entities.Status;
-import com.ticketsystem.Entities.Ticket;
 import com.ticketsystem.Mapper.AssignmentMapper;
 import com.ticketsystem.Repository.AssignmentRepository;
 import com.ticketsystem.Service.AssignmentService;
@@ -94,5 +93,23 @@ public class AssignmentServiceImpl implements AssignmentService {
                                             .thenReturn(assignmentDto)
                             );
                 });
+    }
+
+    @Override
+    public Mono<AssignmentsDto> update(AssignmentsDto assignmentsDto) {
+        return assignmentRepository.findById(assignmentsDto.getId())
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket-Assignment not found")))
+                .flatMap(existing -> {
+                    AssignmentsDto.update(existing, assignmentsDto);
+                    return assignmentRepository.save(existing);
+                })
+                .map(AssignmentMapper::toDto);
+    }
+
+    @Override
+    public Mono<Void> delete(Long id) {
+        return assignmentRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket-Assignment not found")))
+                .flatMap(assignmentRepository::delete);
     }
 }

@@ -55,4 +55,16 @@ public class AssignmentController {
         return assignmentService.assignTicket(ticketId, assignmentsDto)
                 .map(ApiResponse::success);
     }
+
+    @PutMapping("/update/{id}")
+    public Mono<ApiResponse<?>> update(@RequestBody AssignmentsDto assignmentsDto) {
+        return assignmentService.update(assignmentsDto)
+                .map(ApiResponse::success);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Mono<ApiResponse<?>> delete(@PathVariable Long id) {
+        return assignmentService.delete(id)
+                .thenReturn(ApiResponse.deleted("Deleted Success"));
+    }
 }
