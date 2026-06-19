@@ -11,6 +11,12 @@ public class TicketNoGenerator {
 
     private final TicketRepository ticketRepository;
 
+    private static int counter = 1;
+
+    public static synchronized String generateStaticTicketNo() {
+        return "TICKET" + "-" + String.format("%04d", counter++);
+    }
+
     public Mono<String> generateTicketNo() {
         return ticketRepository.findMaxTicketNo()
                 .defaultIfEmpty("TICKET-0000")
