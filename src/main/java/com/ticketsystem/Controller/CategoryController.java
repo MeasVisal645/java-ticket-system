@@ -23,7 +23,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Mono<ApiResponse<?>> findOne(@PathVariable Long id) {
+    public Mono<ApiResponse<?>> findById(@PathVariable Long id) {
         return categoryService.findById(id)
                 .map(ApiResponse::success);
     }

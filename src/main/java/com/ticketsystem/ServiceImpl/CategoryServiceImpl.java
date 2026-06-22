@@ -51,6 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Mono<CategoryDto> update(CategoryDto categoryDto) {
         return categoryRepository.findById(categoryDto.getId())
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Category Not Found")))
                 .flatMap(existing -> {
                     CategoryDto.update(existing, categoryDto);
                     return categoryRepository.save(existing);
