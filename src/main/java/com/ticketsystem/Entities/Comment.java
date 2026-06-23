@@ -52,8 +52,9 @@ public class Comment {
                 .id(commentDto.getId())
                 .ticketId(commentDto.getTicketId())
                 .comment(commentDto.getComment())
-                .note(commentDto.getNote());
-//                .createdBy(commentDto.getCreatedBy());
+                .note(commentDto.getNote())
+                .createdBy(commentDto.getCreatedBy())
+                .createdAt(commentDto.getCreatedAt());
     }
 
 

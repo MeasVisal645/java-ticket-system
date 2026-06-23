@@ -19,6 +19,8 @@ public class CommentMapper {
         dto.setTicketId(comment.getTicketId());
         dto.setComment(comment.getComment());
         dto.setNote(comment.getNote());
+        dto.setCreatedBy(comment.getCreatedBy());
+        dto.setCreatedAt(comment.getCreatedAt());
 
         return dto;
     }
@@ -35,6 +37,8 @@ public class CommentMapper {
                 .ticketId(dto.getTicketId())
                 .comment(dto.getComment())
                 .note(dto.getNote())
+                .createdBy(dto.getCreatedBy())
+                .createdAt(dto.getCreatedAt())
                 .build();
     }
 }

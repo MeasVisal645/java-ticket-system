@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Column;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,10 +20,13 @@ public class CommentDto {
     private String comment;
     private String note;
     private String createdBy;
+    private LocalDateTime createdAt;
 
     public static Comment update(Comment existing, CommentDto updated) {
         existing.setComment(updated.getComment());
         existing.setNote(updated.getNote());
+        existing.setCreatedBy(updated.getCreatedBy());
+        existing.setUpdatedAt(updated.getCreatedAt());
         return existing;
     }
 }
