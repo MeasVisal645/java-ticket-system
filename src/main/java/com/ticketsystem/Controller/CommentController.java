@@ -16,8 +16,15 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/{id}")
-    public Mono<ApiResponse<CommentDto>> findById(@PathVariable Long id) {
+    public Mono<ApiResponse<?>> findById(@PathVariable Long id) {
         return commentService.findById(id)
+                .map(ApiResponse::success);
+    }
+
+    @GetMapping("/ticketId/{ticketId}")
+    public Mono<ApiResponse<?>> findByTicketId(@PathVariable Long ticketId) {
+        return commentService.findByTicketId(ticketId)
+                .collectList()
                 .map(ApiResponse::success);
     }
 

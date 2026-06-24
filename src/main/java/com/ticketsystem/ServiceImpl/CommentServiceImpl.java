@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Mono<CommentDto> findById(Long id) {
         return commentRepository.findById(id)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found")))
+                .map(CommentMapper::toDto);
+    }
+
+    @Override
+    public Flux<CommentDto> findByTicketId(Long ticketId) {
+        return commentRepository.findByTicketId(ticketId)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found")))
                 .map(CommentMapper::toDto);
     }
