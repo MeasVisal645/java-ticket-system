@@ -15,7 +15,7 @@ public class DepartmentMapper {
 
         dto.setId(department.getId());
         dto.setName(department.getName());
-        dto.setActive(department.isActive());
+        dto.setIsActive(department.getIsActive());
 
         return dto;
     }
@@ -30,7 +30,7 @@ public class DepartmentMapper {
         return Department.builder()
                 .id(dto.getId())
                 .name(dto.getName())
-                .isActive(dto.isActive())
+                .isActive(dto.getIsActive())
                 .build();
     }
 }

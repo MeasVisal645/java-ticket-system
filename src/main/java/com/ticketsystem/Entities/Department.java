@@ -33,7 +33,7 @@ public class Department {
     @Column(NAME_COLUMN)
     private String name;
     @Column(IS_ACTIVE_COLUMN)
-    private boolean isActive;
+    private Boolean isActive;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;
@@ -45,6 +45,6 @@ public class Department {
         return Department.builder()
                 .id(department.getId())
                 .name(department.getName())
-                .isActive(department.isActive());
+                .isActive(department.getIsActive());
     }
 }
