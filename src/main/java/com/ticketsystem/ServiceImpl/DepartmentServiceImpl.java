@@ -1,10 +1,7 @@
 package com.ticketsystem.ServiceImpl;
 
 import com.ticketsystem.Dto.DepartmentDto;
-import com.ticketsystem.Entities.Category;
 import com.ticketsystem.Entities.Department;
-import com.ticketsystem.Entities.History;
-import com.ticketsystem.Mapper.CategoryMapper;
 import com.ticketsystem.Mapper.DepartmentMapper;
 import com.ticketsystem.Repository.DepartmentRepository;
 import com.ticketsystem.Service.DepartmentService;

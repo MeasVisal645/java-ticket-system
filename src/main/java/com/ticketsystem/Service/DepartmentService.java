@@ -1,6 +1,5 @@
 package com.ticketsystem.Service;
 
-import com.ticketsystem.Dto.CategoryDto;
 import com.ticketsystem.Dto.DepartmentDto;
 import com.ticketsystem.Utils.PageResponse;
 import org.springframework.stereotype.Service;
