@@ -1,6 +1,5 @@
 package com.ticketsystem.Entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ticketsystem.Dto.TicketDto;
 import com.ticketsystem.Utils.DateUtils;
@@ -27,6 +26,7 @@ public class Ticket {
     public static final String TICKET_NO_COLUMN = "ticketNo";
     public static final String SUBJECT_COLUMN = "subject";
     public static final String DESCRIPTION_COLUMN = "description";
+    public static final String REQUEST_FROM_COLUMN = "requestFrom";
     public static final String PRIORITY_COLUMN = "priority";
     public static final String STATUS_COLUMN = "status";
     public static final String CREATED_BY_COLUMN = "createdBy";
@@ -44,6 +44,8 @@ public class Ticket {
     private String subject;
     @Column(DESCRIPTION_COLUMN)
     private String description;
+    @Column(REQUEST_FROM_COLUMN)
+    private String requestFrom;
     @Column(PRIORITY_COLUMN)
     private Priority priority;
     @Column(STATUS_COLUMN)
@@ -64,9 +66,11 @@ public class Ticket {
                 .ticketNo(ticketDto.getTicketNo())
                 .subject(ticketDto.getSubject())
                 .description(ticketDto.getDescription())
+                .requestFrom(ticketDto.getRequestFrom())
                 .priority(ticketDto.getPriority())
                 .status(ticketDto.getStatus())
                 .createdBy(ticketDto.getCreatedBy())
-                .createdAt(ticketDto.getCreatedAt());
+                .createdAt(ticketDto.getCreatedAt())
+                .updatedAt(ticketDto.getUpdatedAt());
     }
 }
