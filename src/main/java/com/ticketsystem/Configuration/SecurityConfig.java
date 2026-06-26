@@ -1,11 +1,11 @@
 package com.ticketsystem.Configuration;
 
 import com.ticketsystem.Security.JwtAuthenticationFilter;
-import com.ticketsystem.Utils.JwtUtils;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
@@ -27,16 +27,31 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final ReactiveUserDetailsService userDetailsService;
-    private final JwtUtils jwtUtils;
     private final Dotenv dotenv;
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(
+                                (exchange, e) -> {
+                                    exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                                    return exchange.getResponse().setComplete();
+                                })
+                        .accessDeniedHandler(
+                                (exchange, e) -> {
+                                    exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+                                    return exchange.getResponse().setComplete();
+                                })
+                )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/api/v1/ticket-comment/**").hasAnyRole("AGENT", "ADMIN")
+                        .pathMatchers("/api/v1/ticket-comment/create").hasAnyRole("AGENT", "ADMIN")
+                        .pathMatchers("/api/v1/file/**").permitAll()
+                        .pathMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .pathMatchers("/api/v1/auth/**").permitAll()
                         .pathMatchers(
                                 "/v3/api-docs/**",
@@ -51,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(dotenv.get("ORIGIN")));
+        config.setAllowedOrigins(List.of(Objects.requireNonNull(dotenv.get("ORIGIN")).split(",")));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
