@@ -1,7 +1,6 @@
 package com.ticketsystem.Mapper;
 
 import com.ticketsystem.Dto.TicketDto;
-import com.ticketsystem.Entities.Status;
 import com.ticketsystem.Entities.Ticket;
 
 public class TicketMapper {
@@ -22,8 +21,10 @@ public class TicketMapper {
         dto.setDescription(ticket.getDescription());
         dto.setPriority(ticket.getPriority());
         dto.setStatus(ticket.getStatus());
+        dto.setRequestFrom(ticket.getRequestFrom());
         dto.setCreatedBy(ticket.getCreatedBy());
         dto.setCreatedAt(ticket.getCreatedAt());
+        dto.setUpdatedAt(ticket.getUpdatedAt());
 
         return dto;
     }
@@ -43,8 +44,10 @@ public class TicketMapper {
                 .description(dto.getDescription())
                 .priority(dto.getPriority())
                 .status(dto.getStatus())
+                .requestFrom(dto.getRequestFrom())
                 .createdBy(dto.getCreatedBy())
                 .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
                 .build();
     }
 }
