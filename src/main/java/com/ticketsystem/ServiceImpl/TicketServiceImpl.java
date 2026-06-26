@@ -33,6 +33,7 @@ public class TicketServiceImpl implements TicketService {
     private final AttachmentRepository attachmentRepository;
     private final CommentRepository commentRepository;
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
+    private final TicketNoGenerator  ticketNoGenerator;
 
     @Override
     public Flux<TicketDto> findAll() {
@@ -49,18 +50,20 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Mono<TicketDto> create(TicketDto ticketDto) {
-        var ticketNo = TicketNoGenerator.generateTicketNo();
-        return ReactiveSecurityContextHolder.getContext()
-                .map(ctx -> ctx.getAuthentication().getName())
-                .flatMap(currentUser ->
-                        ticketRepository.save(
-                                Ticket.from(ticketDto)
-                                        .ticketNo(ticketNo)
-                                        .createdAt(LocalDateTime.now())
-                                        .createdBy(currentUser)
-                                        .status(Status.OPEN)
-                                        .build()
-                        )
+        return ticketNoGenerator.generateTicketNo()
+                .flatMap(ticketNo ->
+                        ReactiveSecurityContextHolder.getContext()
+                                .map(ctx -> ctx.getAuthentication().getName())
+                                .flatMap(currentUser ->
+                                        ticketRepository.save(
+                                                Ticket.from(ticketDto)
+                                                        .ticketNo(ticketNo)
+                                                        .createdAt(LocalDateTime.now())
+                                                        .createdBy(currentUser)
+                                                        .status(Status.OPEN)
+                                                        .build()
+                                        )
+                                )
                 )
                 .map(TicketMapper::toDto);
     }
