@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.mapping.Column;
 
 import java.time.LocalDateTime;
 
@@ -22,19 +21,23 @@ public class TicketDto {
     private String ticketNo;
     private String subject;
     private String description;
+    private String requestFrom;
     private Priority priority;
     private Status status;
     private String createdBy;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static Ticket update(Ticket existing, TicketDto updated) {
         existing.setTicketNo(updated.getTicketNo());
         existing.setCategoryId(updated.getCategoryId());
         existing.setSubject(updated.getSubject());
         existing.setDescription(updated.getDescription());
+        existing.setRequestFrom(updated.getRequestFrom());
         existing.setPriority(updated.getPriority());
         existing.setStatus(updated.getStatus());
         existing.setCreatedBy(updated.getCreatedBy());
+        existing.setUpdatedAt(updated.getUpdatedAt());
         return existing;
     }
 }
