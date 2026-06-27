@@ -8,7 +8,6 @@ import com.ticketsystem.Entities.Status;
 import com.ticketsystem.Mapper.HistoryMapper;
 import com.ticketsystem.Repository.HistoryRepository;
 import com.ticketsystem.Service.HistoryService;
-import com.ticketsystem.Utils.ApiResponse;
 import com.ticketsystem.Utils.FilterPaginationUtils;
 import com.ticketsystem.Utils.PageResponse;
 import com.ticketsystem.Utils.PaginationUtils;
@@ -22,8 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.swing.text.html.Option;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -80,7 +77,7 @@ public class HistoryServiceImpl implements HistoryService {
                 Optional.ofNullable(pageNumber).orElse(PaginationUtils.DEFAULT_PAGE_NUMBER),
                 Optional.ofNullable(pageSize).orElse(PaginationUtils.DEFAULT_LIMIT),
                 Sort.by(Sort.Order.desc(History.CHANGED_AT_COLUMN)),
-                HistoryMapper::toDto
+                HistoryMapper.INSTANCE::toDto
         );
     }
 }

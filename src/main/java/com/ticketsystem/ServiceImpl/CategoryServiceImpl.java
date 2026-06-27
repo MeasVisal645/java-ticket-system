@@ -31,13 +31,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Flux<CategoryDto> findAll() {
         return categoryRepository.findAll()
-                .map(CategoryMapper::toDto);
+                .map(CategoryMapper.INSTANCE::toDto);
     }
 
     @Override
     public Mono<CategoryDto> findById(Long id) {
         return categoryRepository.findById(id)
-                .map(CategoryMapper::toDto);
+                .map(CategoryMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(Category.from(categoryDto)
                         .isActive(true)
                 .build())
-                .map(CategoryMapper::toDto);
+                .map(CategoryMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CategoryServiceImpl implements CategoryService {
                     CategoryDto.update(existing, categoryDto);
                     return categoryRepository.save(existing);
                 })
-                .map(CategoryMapper::toDto);
+                .map(CategoryMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
                 Optional.ofNullable(pageNumber).orElse(PaginationUtils.DEFAULT_PAGE_NUMBER),
                 Optional.ofNullable(pageSize).orElse(PaginationUtils.DEFAULT_LIMIT),
                 Sort.by(Sort.Order.asc(Category.ID_COLUMN)),
-                CategoryMapper::toDto
+                CategoryMapper.INSTANCE::toDto
         );
     }
 }

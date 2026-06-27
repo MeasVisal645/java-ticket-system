@@ -38,14 +38,14 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Flux<TicketDto> findAll() {
         return ticketRepository.findAll()
-                .map(TicketMapper::toDto);
+                .map(TicketMapper.INSTANCE::toDto);
     }
 
     @Override
     public Mono<TicketDto> findById(Long id) {
         return ticketRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Ticket not found")))
-                .map(TicketMapper::toDto);
+                .map(TicketMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class TicketServiceImpl implements TicketService {
                                         )
                                 )
                 )
-                .map(TicketMapper::toDto);
+                .map(TicketMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class TicketServiceImpl implements TicketService {
                                     existing.setCreatedBy(currentUser);
                                     return ticketRepository.save(existing);
                                 })
-                                .map(TicketMapper::toDto)
+                                .map(TicketMapper.INSTANCE::toDto)
                 );
     }
 
@@ -123,7 +123,7 @@ public class TicketServiceImpl implements TicketService {
                 Optional.ofNullable(pageNumber).orElse(PaginationUtils.DEFAULT_PAGE_NUMBER),
                 Optional.ofNullable(pageSize).orElse(PaginationUtils.DEFAULT_LIMIT),
                 Sort.by(Sort.Order.desc(Ticket.CREATED_AT_COLUMN)),
-                TicketMapper::toDto
+                TicketMapper.INSTANCE::toDto
         );
     }
 
@@ -137,7 +137,7 @@ public class TicketServiceImpl implements TicketService {
                     existing.setUpdatedAt(LocalDateTime.now());
                     return ticketRepository.save(existing);
                 })
-                .map(TicketMapper::toDto);
+                .map(TicketMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class TicketServiceImpl implements TicketService {
                     existing.setUpdatedAt(LocalDateTime.now());
                     return ticketRepository.save(existing);
                 })
-                .map(TicketMapper::toDto);
+                .map(TicketMapper.INSTANCE::toDto);
     }
 
 

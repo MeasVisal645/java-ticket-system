@@ -31,14 +31,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Flux<DepartmentDto> findAll() {
         return departmentRepository.findAll()
-                .map(DepartmentMapper::toDto);
+                .map(DepartmentMapper.INSTANCE::toDto);
     }
 
     @Override
     public Mono<DepartmentDto> findById(Long id) {
         return departmentRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Department Not Found")))
-                .map(DepartmentMapper::toDto);
+                .map(DepartmentMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                         .isActive(true)
                         .createdAt(LocalDateTime.now())
                 .build())
-                .map(DepartmentMapper::toDto);
+                .map(DepartmentMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                     existing.setUpdatedAt(LocalDateTime.now());
                     return departmentRepository.save(existing);
                 })
-                .map(DepartmentMapper::toDto);
+                .map(DepartmentMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                 Optional.ofNullable(pageNumber).orElse(PaginationUtils.DEFAULT_PAGE_NUMBER),
                 Optional.ofNullable(pageSize).orElse(PaginationUtils.DEFAULT_LIMIT),
                 Sort.by(Sort.Order.asc(Department.ID_COLUMN)),
-                DepartmentMapper::toDto
+                DepartmentMapper.INSTANCE::toDto
         );
     }
 }

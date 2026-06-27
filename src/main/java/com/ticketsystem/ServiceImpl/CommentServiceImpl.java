@@ -27,14 +27,14 @@ public class CommentServiceImpl implements CommentService {
     public Mono<CommentDto> findById(Long id) {
         return commentRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found")))
-                .map(CommentMapper::toDto);
+                .map(CommentMapper.INSTANCE::toDto);
     }
 
     @Override
     public Flux<CommentDto> findByTicketId(Long ticketId) {
         return commentRepository.findByTicketId(ticketId)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found")))
-                .map(CommentMapper::toDto);
+                .map(CommentMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
                                     .createdBy(currentUser)
                                     .createdAt(LocalDateTime.now())
                                     .build())
-                ).map(CommentMapper::toDto);
+                ).map(CommentMapper.INSTANCE::toDto);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
                                     return commentRepository.save(existing);
                                 })
                         )
-                .map(CommentMapper::toDto);
+                .map(CommentMapper.INSTANCE::toDto);
     }
 
     @Override

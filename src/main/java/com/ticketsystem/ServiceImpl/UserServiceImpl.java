@@ -22,8 +22,6 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -89,7 +87,7 @@ public class UserServiceImpl implements UserService {
                 .map(Authentication::getName)
                 .flatMap(userRepository::findByUsername)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Credentials")))
-                .map(UserMapper::toDto);
+                .map(UserMapper.INSTANCE::toDto);
     }
 
     @Override

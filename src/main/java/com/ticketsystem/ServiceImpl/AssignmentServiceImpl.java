@@ -52,7 +52,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 Optional.ofNullable(pageNumber).orElse(PaginationUtils.DEFAULT_PAGE_NUMBER),
                 Optional.ofNullable(pageSize).orElse(PaginationUtils.DEFAULT_LIMIT),
                 Sort.by(Sort.Order.desc(Assignments.ASSIGNED_AT_COLUMN)),
-                AssignmentMapper::toDto
+                AssignmentMapper.INSTANCE::toDto
         );
     }
 
@@ -80,13 +80,13 @@ public class AssignmentServiceImpl implements AssignmentService {
 
                     return userService.currentUser()
                             .flatMap(currentUser -> {
-                                Assignments assignment = AssignmentMapper.toEntity(assignmentsDto);
+                                Assignments assignment = AssignmentMapper.INSTANCE.toEntity(assignmentsDto);
                                 assignment.setTicketId(ticketId);
                                 assignment.setAssignBy(currentUser.getId());
                                 assignment.setAssignedAt(LocalDateTime.now());
 
                                 return r2dbcEntityTemplate.insert(assignment)
-                                        .map(AssignmentMapper::toDto);
+                                        .map(AssignmentMapper.INSTANCE::toDto);
                             })
                             .flatMap(assignmentDto ->
                                     ticketService.updateStatus(ticketId, Status.ASSIGNED)
@@ -103,7 +103,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                     AssignmentsDto.update(existing, assignmentsDto);
                     return assignmentRepository.save(existing);
                 })
-                .map(AssignmentMapper::toDto);
+                .map(AssignmentMapper.INSTANCE::toDto);
     }
 
     @Override
