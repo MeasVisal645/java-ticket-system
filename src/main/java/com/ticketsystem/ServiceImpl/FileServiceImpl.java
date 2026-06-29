@@ -28,8 +28,8 @@ public class FileServiceImpl implements FileService {
     private static final Set<String> ALLOWED_TYPES = Set.of(
             "image/jpeg",
             "image/png",
-            "image/webp",
             "application/pdf"
+
     );
 
     public FileServiceImpl(Dotenv dotenv) {
@@ -38,7 +38,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Mono<String> uploadFile(String keyName, FilePart filePart) {
-        String uploadDir = dotenv.get("UPLOAD_DIR");
+        String uploadDir = dotenv.get("PROD_UPLOAD_DIR");
         return Mono.fromCallable(() -> {
                     Path path = Paths.get(uploadDir, keyName);
                     Files.createDirectories(path.getParent());
@@ -64,7 +64,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Mono<Void> deleteFile(String keyName) {
-        String uploadDir = dotenv.get("UPLOAD_DIR");
+        String uploadDir = dotenv.get("PROD_UPLOAD_DIR");
         return Mono.fromRunnable(() -> {
                     Path path = Paths.get(uploadDir, keyName);
                     try {
@@ -79,7 +79,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public Mono<FileSystemResource> getFile(String keyName) {
-        String uploadDir = dotenv.get("UPLOAD_DIR");
+        String uploadDir = dotenv.get("PROD_UPLOAD_DIR");
         return Mono.fromCallable(() -> {
                     Path path = Paths.get(uploadDir, keyName);
                     if (!Files.exists(path)) {
