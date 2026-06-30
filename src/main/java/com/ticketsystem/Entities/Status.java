@@ -9,7 +9,7 @@ public enum Status {
     IN_PROGRESS("IN_PROGRESS"),
     RESOLVED("RESOLVED"),
     CLOSED("CLOSED"),
-    REOPENED("REOPENED"),;
+    REOPENED("REOPENED");
 
     private final String value;
 

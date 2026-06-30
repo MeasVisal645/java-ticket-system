@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Flux<UsernameResponse> FindAllUsers() {
         return userRepository.findAll()
-                .map(user -> new UsernameResponse(user.getId(), user.getUsername()));
+                .map(UserMapper.INSTANCE::toUsernameResponseDto);
     }
 
     @Override
