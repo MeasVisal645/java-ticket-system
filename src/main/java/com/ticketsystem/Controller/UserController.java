@@ -4,7 +4,6 @@ import com.ticketsystem.Entities.User;
 import com.ticketsystem.Service.UserService;
 import com.ticketsystem.Utils.ApiResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
