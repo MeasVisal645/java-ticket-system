@@ -5,6 +5,7 @@ import com.ticketsystem.Service.UserService;
 import com.ticketsystem.Utils.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -23,14 +24,15 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public Mono<ApiResponse<User>> update(@RequestBody User user) {
+    public Mono<ApiResponse<?>> update(@RequestBody User user) {
         return userService.update(user)
-                .map(updatedUser -> new ApiResponse<>(HttpStatus.OK, "Success", updatedUser));
+                .map(ApiResponse::updated);
     }
 
     @DeleteMapping("/delete/{id}")
-    public Mono<ApiResponse<Void>> delete(@PathVariable Long id) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public Mono<ApiResponse<?>> delete(@PathVariable Long id) {
         return userService.delete(id)
-                .map(ticket -> new ApiResponse<>(HttpStatus.OK, "Success", ticket));
+                .thenReturn(ApiResponse.deleted("Delete Success"));
     }
 }
