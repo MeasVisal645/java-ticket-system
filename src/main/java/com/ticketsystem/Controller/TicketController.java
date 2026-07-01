@@ -10,13 +10,11 @@ import com.ticketsystem.Utils.ApiResponse;
 import com.ticketsystem.Utils.PageResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @RestController
@@ -52,6 +50,7 @@ public class TicketController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ApiResponse<?>> delete(@PathVariable Long id) {
         return ticketService.delete(id)
                 .thenReturn(ApiResponse.deleted("Deleted Success"));
