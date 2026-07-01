@@ -4,7 +4,6 @@ import com.ticketsystem.Dto.TicketDto;
 import com.ticketsystem.Dto.UpdatePriorityRequest;
 import com.ticketsystem.Dto.UpdateStatusRequest;
 import com.ticketsystem.Entities.Priority;
-import com.ticketsystem.Entities.Ticket;
 import com.ticketsystem.Service.TicketService;
 import com.ticketsystem.Utils.ApiResponse;
 import com.ticketsystem.Utils.PageResponse;
