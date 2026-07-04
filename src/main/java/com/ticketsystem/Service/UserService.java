@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 @Service
 public interface UserService {
     Flux<UsernameResponse> FindAllUsers();
-    Mono<User> create(User user);
-    Mono<User> update(User user);
+    Mono<UserDto> create(User user);
+    Mono<UserDto> update(User user);
     Mono<Void> delete(Long id);
     Mono<AuthResponse> signIn(AuthRequest request);
     Mono<AuthResponse> refreshToken(String token);

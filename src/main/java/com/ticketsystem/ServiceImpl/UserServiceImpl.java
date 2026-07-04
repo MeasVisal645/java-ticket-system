@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<User> create(User user) {
+    public Mono<UserDto> create(User user) {
         var encodedPassword = passwordEncoder.encode(user.getPassword());
 
         return userRepository.save(
@@ -106,11 +106,12 @@ public class UserServiceImpl implements UserService {
                         .password(encodedPassword)
                         .isActive(true)
                         .build()
-        );
+        )
+        .map(UserMapper.INSTANCE::toDto);
     }
 
     @Override
-    public Mono<User> update(User user) {
+    public Mono<UserDto> update(User user) {
         var encodedPassword = passwordEncoder.encode(user.getPassword());
         return userRepository.findById(user.getId())
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
@@ -118,7 +119,8 @@ public class UserServiceImpl implements UserService {
                     User.update(existingUser, user);
                     existingUser.setPassword(encodedPassword);
                     return userRepository.save(existingUser);
-                });
+                })
+                .map(UserMapper.INSTANCE::toDto);
     }
 
     @Override
