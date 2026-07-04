@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Objects;
 
 @Component
 @Data
@@ -21,9 +22,9 @@ public class JwtUtils {
     private final Long refreshExpiration;
 
     public JwtUtils(Dotenv dotenv) {
-        this.secretKey = Keys.hmacShaKeyFor(dotenv.get("JWT_SECRET").getBytes());
-        this.accessExpiration = Long.parseLong(dotenv.get("JWT_ACCESS_EXPIRATION", "600000"));
-        this.refreshExpiration = Long.parseLong(dotenv.get("JWT_REFRESH);_EXPIRATION", "1209600000"));
+        this.secretKey = Keys.hmacShaKeyFor(Objects.requireNonNull(dotenv.get("JWT_SECRET")).getBytes());
+        this.accessExpiration = Long.parseLong(Objects.requireNonNull(dotenv.get("JWT_ACCESS_EXPIRATION", "600000000")));
+        this.refreshExpiration = Long.parseLong(Objects.requireNonNull(dotenv.get("JWT_REFRESH_EXPIRATION", "6000000000")));
     }
 
     private Claims claims(String token) {
@@ -59,7 +60,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("id", user.getId())
-                .claim("role", "ROLE_" + user.getRole().name())
+                .claim("role", user.getRole().name())
                 .claim("type", "access")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpiration))
@@ -71,7 +72,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("id", user.getId())
-                .claim("role", "ROLE_" + user.getRole().name())
+                .claim("role", user.getRole().name())
                 .claim("type", "refresh")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
