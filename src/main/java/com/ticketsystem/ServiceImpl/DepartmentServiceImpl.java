@@ -44,9 +44,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Mono<DepartmentDto> create(DepartmentDto departmentDto) {
         return departmentRepository.save(Department.from(departmentDto)
-                        .isActive(true)
+                        .active(true)
                         .createdAt(LocalDateTime.now())
-                .build())
+                        .build())
                 .map(DepartmentMapper.INSTANCE::toDto);
     }
 
@@ -70,11 +70,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Mono<PageResponse<DepartmentDto>> findPagination(Integer pageSize, Integer pageNumber, String search, Boolean isActive) {
+    public Mono<PageResponse<DepartmentDto>> findPagination(Integer pageSize, Integer pageNumber, String search, Boolean active) {
         Criteria criteria = Criteria.empty();
 
-        if (isActive != null) {
-            criteria = criteria.or(Criteria.where(Department.IS_ACTIVE_COLUMN).is(isActive));
+        if (active != null) {
+            criteria = criteria.or(Criteria.where(Department.IS_ACTIVE_COLUMN).is(active));
         }
 
         if (search != null && !search.isBlank()) {

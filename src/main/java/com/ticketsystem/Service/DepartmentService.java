@@ -14,7 +14,7 @@ public interface DepartmentService {
     Mono<DepartmentDto> create(DepartmentDto departmentDto);
     Mono<DepartmentDto> update(DepartmentDto departmentDto);
     Mono<Void> delete(Long id);
-    Mono<PageResponse<DepartmentDto>> findPagination(Integer pageSize, Integer pageNumber, String search, Boolean isActive);
+    Mono<PageResponse<DepartmentDto>> findPagination(Integer pageSize, Integer pageNumber, String search, Boolean active);
 
 
 }
