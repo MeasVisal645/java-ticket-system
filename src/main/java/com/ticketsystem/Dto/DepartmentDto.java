@@ -14,11 +14,11 @@ public class DepartmentDto {
 
     private Long id;
     private String name;
-    private Boolean isActive;
+    private boolean isActive;
 
     public static Department update(Department existing, DepartmentDto updated) {
         existing.setName(updated.getName());
-        existing.setIsActive(updated.getIsActive());
+        existing.setActive(updated.isActive());
 
         return existing;
     }
