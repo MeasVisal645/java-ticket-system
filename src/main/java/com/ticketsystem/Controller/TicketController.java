@@ -4,6 +4,7 @@ import com.ticketsystem.Dto.TicketDto;
 import com.ticketsystem.Dto.UpdatePriorityRequest;
 import com.ticketsystem.Dto.UpdateStatusRequest;
 import com.ticketsystem.Entities.Priority;
+import com.ticketsystem.Entities.Status;
 import com.ticketsystem.Service.TicketService;
 import com.ticketsystem.Utils.ApiResponse;
 import com.ticketsystem.Utils.PageResponse;
@@ -86,4 +87,15 @@ public class TicketController {
                 .map(ApiResponse::updated);
     }
 
+    @GetMapping("/total")
+    public Mono<ApiResponse<?>> count() {
+        return ticketService.count()
+                .map(ApiResponse::success);
+    }
+
+    @GetMapping("/total/{status}")
+    public Mono<ApiResponse<?>> countByStatus(@RequestParam Status status) {
+        return ticketService.countByStatus(status)
+                .map(ApiResponse::success);
+    }
 }
