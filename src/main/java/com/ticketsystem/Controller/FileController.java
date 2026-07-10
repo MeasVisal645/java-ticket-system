@@ -5,6 +5,7 @@ import com.ticketsystem.Utils.ApiResponse;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,15 +37,23 @@ public class FileController {
                 );
     }
 
-    @GetMapping("/download/{fileName}")
-    public Mono<ResponseEntity<Resource>> downloadFile(@PathVariable String fileName) {
-        return fileService.getFile(fileName)
+    @GetMapping("/{keyName}")
+    public Mono<ResponseEntity<FileSystemResource>> getFile(@PathVariable String keyName) {
+        return fileService.getFile(keyName)
+                .map(resource -> ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_PNG)
+                        .body(resource));
+    }
+
+    @GetMapping("/download/{keyName}")
+    public Mono<ResponseEntity<Resource>> downloadFile(@PathVariable String keyName) {
+        return fileService.getFile(keyName)
                 .map(resource -> ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .header(
                                 HttpHeaders.CONTENT_DISPOSITION,
                                 "attachment; filename=\"" +
-                                        fileName +
+                                        keyName +
                                         "\""
                         )
                         .body((Resource) resource)
