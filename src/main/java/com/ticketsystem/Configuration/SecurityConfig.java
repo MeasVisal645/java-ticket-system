@@ -5,6 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -50,7 +51,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/v1/ticket-comment/create").hasAnyRole("AGENT", "ADMIN")
-                        .pathMatchers("/api/v1/file/**").permitAll()
+                        .pathMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
                         .pathMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .pathMatchers("/api/v1/auth/**").permitAll()
                         .pathMatchers(
