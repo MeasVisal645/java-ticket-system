@@ -5,7 +5,9 @@ import com.ticketsystem.Entities.Priority;
 import com.ticketsystem.Service.AssignmentService;
 import com.ticketsystem.Utils.ApiResponse;
 import com.ticketsystem.Utils.PageResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -51,18 +53,19 @@ public class AssignmentController {
     }
 
     @PostMapping("/{id}/create")
-    public Mono<ApiResponse<?>> create(@PathVariable(name = "id") Long ticketId, @RequestBody AssignmentsDto assignmentsDto) {
+    public Mono<ApiResponse<?>> create(@Valid @PathVariable(name = "id") Long ticketId, @RequestBody AssignmentsDto assignmentsDto) {
         return assignmentService.assignTicket(ticketId, assignmentsDto)
                 .map(ApiResponse::success);
     }
 
     @PutMapping("/update/{id}")
-    public Mono<ApiResponse<?>> update(@RequestBody AssignmentsDto assignmentsDto) {
+    public Mono<ApiResponse<?>> update(@Valid @RequestBody AssignmentsDto assignmentsDto) {
         return assignmentService.update(assignmentsDto)
                 .map(ApiResponse::success);
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ApiResponse<?>> delete(@PathVariable Long id) {
         return assignmentService.delete(id)
                 .thenReturn(ApiResponse.deleted("Deleted Success"));
