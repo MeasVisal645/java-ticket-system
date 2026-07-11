@@ -5,6 +5,8 @@ import com.ticketsystem.Service.CommentService;
 import com.ticketsystem.Utils.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -29,18 +31,21 @@ public class CommentController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRoleAny('AGENT', 'ADMIN')")
     public Mono<ApiResponse<?>> create(@Valid @RequestBody CommentDto commentDto) {
         return commentService.create(commentDto)
                 .map(ApiResponse::created);
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasRoleAny('AGENT', 'ADMIN')")
     public Mono<ApiResponse<?>> update(@Valid @RequestBody CommentDto commentDto) {
         return commentService.update(commentDto)
                 .map(ApiResponse::success);
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ApiResponse<?>> delete(@PathVariable Long id) {
         return commentService.delete(id)
                 .thenReturn(ApiResponse.deleted("Delete Success"));

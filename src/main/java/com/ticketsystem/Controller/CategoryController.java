@@ -5,6 +5,7 @@ import com.ticketsystem.Service.CategoryService;
 import com.ticketsystem.Utils.ApiResponse;
 import com.ticketsystem.Utils.PageResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -41,6 +42,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<ApiResponse<?>> delete(@PathVariable Long id) {
         return categoryService.delete(id)
                 .thenReturn(ApiResponse.deleted("Deleted Success"));

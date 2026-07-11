@@ -6,6 +6,7 @@ import com.ticketsystem.Dto.UserDto;
 import com.ticketsystem.Entities.User;
 import com.ticketsystem.Service.UserService;
 import com.ticketsystem.Utils.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -22,7 +23,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public Mono<ApiResponse<?>> signUp(@RequestBody User user) {
+    public Mono<ApiResponse<?>> signUp(@Valid @RequestBody User user) {
         return userService.create(user)
                 .map(ApiResponse::success);
     }
