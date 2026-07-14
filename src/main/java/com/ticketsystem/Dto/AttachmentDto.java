@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,15 +16,13 @@ public class AttachmentDto {
 
     private Long id;
     private Long ticketId;
-    private String fileName;
-    private String filePath;
-    private String contentType;
-    private Long fileSize;
+    private String fileType;
+    private String url;
 
     public static Attachment update(Attachment existing, AttachmentDto updated) {
         existing.setTicketId(updated.getTicketId());
-        existing.setFileName(updated.getFileName());
-        existing.setFilePath(updated.getFilePath());
+        existing.setFileType(updated.getFileType());
+        existing.setUrl(updated.getUrl());
         return existing;
     }
 }
