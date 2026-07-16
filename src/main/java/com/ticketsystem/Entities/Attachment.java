@@ -24,6 +24,7 @@ public class Attachment {
     public static final String TICKET_ID_COLUMN = "ticketId";
     public static final String FILE_TYPE_COLUMN = "fileType";
     public static final String URL_COLUMN = "url";
+    public static final String KEY_NAME_COLUMN = "keyName";
     public static final String CREATED_AT_COLUMN = "createdAt";
 
     @Id
@@ -35,6 +36,8 @@ public class Attachment {
     private String fileType;
     @Column(URL_COLUMN)
     private String url;
+    @Column(KEY_NAME_COLUMN)
+    private String keyName;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;
@@ -45,6 +48,7 @@ public class Attachment {
                 .ticketId(attachment.getTicketId())
                 .fileType(attachment.getFileType())
                 .url(attachment.getUrl())
+                .keyName(attachment.getKeyName())
                 .createdAt(attachment.getCreatedAt());
     }
 }

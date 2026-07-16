@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 @Service
 public interface AttachmentService {
 
-    Flux<Attachment> findByTicketId(Long ticketId);
+    Flux<AttachmentDto> findByTicketId(Long ticketId);
     Mono<AttachmentDto> create(Long ticketId, Mono<FilePart> file);
+    Mono<Void> delete(Long id);
 }
