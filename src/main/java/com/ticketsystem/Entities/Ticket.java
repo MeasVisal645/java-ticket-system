@@ -26,6 +26,7 @@ public class Ticket {
     public static final String TICKET_NO_COLUMN = "ticketNo";
     public static final String SUBJECT_COLUMN = "subject";
     public static final String DESCRIPTION_COLUMN = "description";
+    public static final String BODY_COLUMN = "body";
     public static final String REQUEST_FROM_COLUMN = "requestFrom";
     public static final String PRIORITY_COLUMN = "priority";
     public static final String STATUS_COLUMN = "status";
@@ -44,6 +45,8 @@ public class Ticket {
     private String subject;
     @Column(DESCRIPTION_COLUMN)
     private String description;
+    @Column(BODY_COLUMN)
+    private String body;
     @Column(REQUEST_FROM_COLUMN)
     private String requestFrom;
     @Column(PRIORITY_COLUMN)
@@ -66,6 +69,7 @@ public class Ticket {
                 .ticketNo(ticketDto.getTicketNo())
                 .subject(ticketDto.getSubject())
                 .description(ticketDto.getDescription())
+                .body(ticketDto.getBody())
                 .requestFrom(ticketDto.getRequestFrom())
                 .priority(ticketDto.getPriority())
                 .status(ticketDto.getStatus())
