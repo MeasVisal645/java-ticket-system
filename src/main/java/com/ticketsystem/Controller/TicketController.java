@@ -63,7 +63,8 @@ public class TicketController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) LocalDateTime startDate,
             @RequestParam(required = false) LocalDateTime endDate,
-            @RequestParam(required = false) Priority priority
+            @RequestParam(required = false) Priority priority,
+            @RequestParam(required = false) Status status
     ) {
         return ticketService.findPagination(
                         pageSize,
@@ -71,7 +72,8 @@ public class TicketController {
                         search,
                         startDate,
                         endDate,
-                        priority
+                        priority,
+                        status
                 ).map(ApiResponse::success);
     }
 

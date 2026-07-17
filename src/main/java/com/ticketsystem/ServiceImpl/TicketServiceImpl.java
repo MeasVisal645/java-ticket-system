@@ -23,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -98,11 +99,23 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Mono<PageResponse<TicketDto>> findPagination(Integer pageSize, Integer pageNumber, String search, LocalDateTime startDate, LocalDateTime endDate, Priority priority) {
+    public Mono<PageResponse<TicketDto>> findPagination(
+            Integer pageSize,
+            Integer pageNumber,
+            String search,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Priority priority,
+            Status status
+    ) {
         Criteria criteria = Criteria.empty();
 
         if (priority != null) {
             criteria = criteria.or(Criteria.where(Ticket.PRIORITY_COLUMN).is(priority));
+        }
+
+        if (status != null) {
+            criteria = criteria.or(Criteria.where(Ticket.STATUS_COLUMN).is(status));
         }
 
         if (startDate != null && endDate != null) {
@@ -151,6 +164,18 @@ public class TicketServiceImpl implements TicketService {
                     return ticketRepository.save(existing);
                 })
                 .map(TicketMapper.INSTANCE::toDto);
+    }
+
+    @Override
+    public Mono<Map<String, Long>> count() {
+        return ticketRepository.count()
+                .map(count -> Map.of("total", count));
+    }
+
+    @Override
+    public Mono<Map<String, Long>> countByStatus(Status status) {
+        return ticketRepository.countByStatus(status)
+                .map(count -> Map.of("total", count));
     }
 
 

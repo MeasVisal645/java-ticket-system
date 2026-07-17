@@ -34,4 +34,10 @@ public class UserController {
         return userService.delete(id)
                 .thenReturn(ApiResponse.deleted("Delete Success"));
     }
+
+    @GetMapping("/total")
+    public Mono<ApiResponse<?>> count() {
+        return userService.count()
+                .map(ApiResponse::success);
+    }
 }

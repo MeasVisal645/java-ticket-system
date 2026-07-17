@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @Service
 public interface UserService {
     Flux<UsernameResponse> FindAllUsers();
@@ -18,4 +20,5 @@ public interface UserService {
     Mono<AuthResponse> signIn(AuthRequest request);
     Mono<AuthResponse> refreshToken(String token);
     Mono<UserDto> currentUser();
+    Mono<Map<String, Long>> count();
 }

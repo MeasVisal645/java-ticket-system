@@ -33,7 +33,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public Mono<AttachmentDto> create(Long ticketId, Mono<FilePart> file) {
         return file.flatMap(filePart -> {
-                    String keyName = "attachments/" + ticketId + "/" + UUID.randomUUID(); //+ "-" + filePart.filename();
+                    String keyName = "attachments/" + ticketId + "/" + UUID.randomUUID();
                     return fileService.uploadFile(keyName, filePart)
                             .flatMap(url -> {
                                 Attachment attachment = new Attachment();

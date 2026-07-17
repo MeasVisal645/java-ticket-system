@@ -22,6 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -88,6 +90,12 @@ public class UserServiceImpl implements UserService {
                 .flatMap(userRepository::findByUsername)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Credentials")))
                 .map(UserMapper.INSTANCE::toDto);
+    }
+
+    @Override
+    public Mono<Map<String, Long>> count() {
+        return userRepository.count()
+                .map(count -> Map.of("total", count));
     }
 
     @Override

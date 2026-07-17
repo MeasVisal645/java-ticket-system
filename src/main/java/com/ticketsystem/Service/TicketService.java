@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Service
 public interface TicketService {
@@ -22,7 +23,10 @@ public interface TicketService {
     Mono<TicketDto> update(TicketDto ticketDto);
     Mono<Void> delete(Long id);
 
-    Mono<PageResponse<TicketDto>> findPagination(Integer pageNumber, Integer pageSize, String search, LocalDateTime startDate, LocalDateTime endDate, Priority priority);
+    Mono<PageResponse<TicketDto>> findPagination(Integer pageNumber, Integer pageSize, String search, LocalDateTime startDate, LocalDateTime endDate, Priority priority, Status status);
     Mono<TicketDto> updatePriority(Long id, Priority priority);
     Mono<TicketDto> updateStatus(Long id, Status status);
+
+    Mono<Map<String, Long>> count();
+    Mono<Map<String, Long>> countByStatus(Status status);
 }
