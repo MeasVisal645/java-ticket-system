@@ -21,6 +21,7 @@ public class TicketDto {
     private String ticketNo;
     private String subject;
     private String description;
+    private String body;
     private String requestFrom;
     private Priority priority;
     private Status status;
@@ -33,6 +34,7 @@ public class TicketDto {
         existing.setCategoryId(updated.getCategoryId());
         existing.setSubject(updated.getSubject());
         existing.setDescription(updated.getDescription());
+        existing.setBody(updated.getBody());
         existing.setRequestFrom(updated.getRequestFrom());
         existing.setPriority(updated.getPriority());
         existing.setStatus(updated.getStatus());
