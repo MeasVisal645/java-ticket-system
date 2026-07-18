@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public Mono<ApiResponse<AuthResponse>> signIn(@RequestBody AuthRequest request, ServerHttpResponse response) {
+    public Mono<ApiResponse<?>> signIn(@RequestBody AuthRequest request, ServerHttpResponse response) {
         return userService.signIn(request)
                 .map(tokens -> {
                     ResponseCookie refreshCookie = ResponseCookie.from(
@@ -54,13 +54,13 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public Mono<ApiResponse<AuthResponse>> refresh(@CookieValue(name = "refreshToken", required = false) String refreshToken) {
+    public Mono<ApiResponse<?>> refresh(@CookieValue(name = "refreshToken", required = false) String refreshToken) {
         return userService.refreshToken(refreshToken)
                 .map(ApiResponse::success);
     }
 
     @GetMapping("/me")
-    public Mono<ApiResponse<UserDto>> me() {
+    public Mono<ApiResponse<?>> me() {
         return userService.currentUser()
                 .map(ApiResponse::success);
     }
