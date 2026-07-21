@@ -28,6 +28,8 @@ public class History {
     public static final String DESCRIPTION_COLUMN = "description";
     public static final String PRIORITY_COLUMN = "priority";
     public static final String STATUS_COLUMN = "status";
+    public static final String OLD_PRIORITY_COLUMN = "old_priority";
+    public static final String OLD_STATUS_COLUMN = "old_status";
     public static final String CREATED_AT_COLUMN = "createdAt";
     public static final String UPDATED_AT_COLUMN = "updatedAt";
     public static final String ACTION_COLUMN = "action";
@@ -48,8 +50,12 @@ public class History {
     private String description;
     @Column(PRIORITY_COLUMN)
     private Priority priority;
+    @Column(OLD_PRIORITY_COLUMN)
+    private Priority oldPriority;
     @Column(STATUS_COLUMN)
     private Status status;
+    @Column(OLD_STATUS_COLUMN)
+    private Status oldStatus;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;

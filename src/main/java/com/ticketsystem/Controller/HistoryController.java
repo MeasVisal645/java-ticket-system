@@ -30,6 +30,13 @@ public class HistoryController {
                 .map(ApiResponse::success);
     }
 
+    @GetMapping("/latest")
+    public Mono<ApiResponse<?>> latest(@RequestParam(required = false) Long id) {
+        return historyService.latest(id)
+                .collectList()
+                .map(ApiResponse::success);
+    }
+
     @GetMapping("/{id}")
     public Mono<ApiResponse<?>> findById(@PathVariable Long id) {
         return historyService.findById(id)

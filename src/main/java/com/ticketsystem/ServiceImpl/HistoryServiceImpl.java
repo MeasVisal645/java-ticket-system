@@ -1,6 +1,7 @@
 package com.ticketsystem.ServiceImpl;
 
 import com.ticketsystem.Dto.HistoryDto;
+import com.ticketsystem.Dto.HistoryResponseDto;
 import com.ticketsystem.Entities.Action;
 import com.ticketsystem.Entities.History;
 import com.ticketsystem.Entities.Priority;
@@ -15,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -79,5 +81,17 @@ public class HistoryServiceImpl implements HistoryService {
                 Sort.by(Sort.Order.desc(History.CHANGED_AT_COLUMN)),
                 HistoryMapper.INSTANCE::toDto
         );
+    }
+
+    @Override
+    public Flux<HistoryResponseDto> latest(Long id) {
+        return r2dbcEntityTemplate
+                .select(History.class)
+                .matching(
+                        Query.query(Criteria.where(History.ID_COLUMN).greaterThan(id))
+                                .sort(Sort.by(Sort.Direction.ASC, History.ID_COLUMN))
+                )
+                .all()
+                .map(HistoryMapper.INSTANCE::toResponseDto);
     }
 }
