@@ -1,5 +1,6 @@
 package com.ticketsystem.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ticketsystem.Dto.AssetDto;
 import com.ticketsystem.Utils.DateUtils;
@@ -36,7 +37,6 @@ public class Asset {
     public static final String OTHER_COLUMN = "other";
     public static final String ASSET_TYPE_COLUMN = "assetType";
     public static final String IS_ACTIVE_COLUMN = "isActive";
-    public static final String IS_DELETED_COLUMN = "isDeleted";
     public static final String TRADEMARK_ID_COLUMN = "tradeMarkId";
     public static final String OFFICE_ID_COLUMN = "officeId";
     public static final String CREATED_AT_COLUMN = "createdAt";
@@ -68,9 +68,7 @@ public class Asset {
     @Column(ASSET_TYPE_COLUMN)
     private String assetType;
     @Column(IS_ACTIVE_COLUMN)
-    private Boolean active;
-    @Column(IS_DELETED_COLUMN)
-    private Boolean deleted;
+    private boolean isActive;
     @Column(TRADEMARK_ID_COLUMN)
     private Long trademarkId;
     @Column(OFFICE_ID_COLUMN)

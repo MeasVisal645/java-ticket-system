@@ -1,5 +1,6 @@
 package com.ticketsystem.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ticketsystem.Entities.Asset;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +29,7 @@ public class AssetDto {
     private String user;
     private String other;
     private String assetType;
-    private Boolean active;
-    private Boolean deleted;
+    private boolean isActive;
     private Long trademarkId;
     private Long officeId;
 
@@ -39,16 +39,15 @@ public class AssetDto {
         existing.setCode(updated.getCode());
         existing.setBrand(updated.getBrand());
         existing.setPrice(updated.getPrice());
-        existing.setPrice(updated.getPrice());
+        existing.setValue(updated.getValue());
         existing.setPurchaseDate(updated.getPurchaseDate());
         existing.setCondition(updated.getCondition());
         existing.setUser(updated.getUser());
         existing.setOther(updated.getOther());
         existing.setAssetType(updated.getAssetType());
+        existing.setActive(updated.isActive());
         existing.setTrademarkId(updated.getTrademarkId());
         existing.setOfficeId(updated.getOfficeId());
-        existing.setActive(updated.getActive());
-        existing.setDeleted(updated.getDeleted());
 
         return existing;
     }

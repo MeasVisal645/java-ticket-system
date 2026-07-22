@@ -15,12 +15,13 @@ public class CategoryDto {
     private Long id;
     private String name;
     private String description;
-    private Boolean isActive;
+    private boolean isActive;
 
     public static Category update(Category existing, CategoryDto updated) {
         existing.setName(updated.getName());
         existing.setDescription(updated.getDescription());
-        existing.setIsActive(updated.getIsActive());
+        existing.setActive(updated.isActive());
+
         return existing;
     }
 }

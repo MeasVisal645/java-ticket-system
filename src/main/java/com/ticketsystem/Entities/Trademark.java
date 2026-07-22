@@ -36,7 +36,7 @@ public class Trademark {
     @Column(FULLNAME_COLUMN)
     private String fullName;
     @Column(IS_ACTIVE_COLUMN)
-    private Boolean isActive;
+    private boolean isActive;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;
@@ -49,6 +49,6 @@ public class Trademark {
                 .id(trademarkDto.getId())
                 .name(trademarkDto.getName())
                 .fullName(trademarkDto.getFullName())
-                .isActive(trademarkDto.getIsActive());
+                .isActive(trademarkDto.isActive());
     }
 }

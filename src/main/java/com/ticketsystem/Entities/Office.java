@@ -34,7 +34,7 @@ public class Office {
     @Column(NAME_COLUMN)
     private String name;
     @Column(IS_ACTIVE_COLUMN)
-    private Boolean isActive;
+    private boolean isActive;
     @Column(DEPARTMENT_ID_COLUMN)
     private Long departmentId;
     @Column(CREATED_AT_COLUMN)
@@ -48,7 +48,7 @@ public class Office {
         return Office.builder()
                 .id(officeDto.getId())
                 .name(officeDto.getName())
-                .isActive(officeDto.getIsActive())
+                .isActive(officeDto.isActive())
                 .departmentId(officeDto.getDepartmentId());
     }
 }

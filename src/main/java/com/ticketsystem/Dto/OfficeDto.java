@@ -14,12 +14,12 @@ public class OfficeDto {
 
     private Long id;
     private String name;
-    private Boolean isActive;
+    private boolean isActive;
     private Long departmentId;
 
     public static Office update(Office existing, OfficeDto updated) {
         existing.setName(updated.getName());
-        existing.setIsActive(updated.getIsActive());
+        existing.setActive(updated.isActive());
         existing.setDepartmentId(updated.getDepartmentId());
 
         return existing;

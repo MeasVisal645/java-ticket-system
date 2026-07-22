@@ -14,12 +14,12 @@ public class TrademarkDto {
     private Long id;
     private String name;
     private String fullName;
-    private Boolean isActive;
+    private boolean isActive;
 
     public static Trademark update(Trademark existing, TrademarkDto updated) {
         existing.setName(updated.getName());
         existing.setFullName(updated.getFullName());
-        existing.setIsActive(updated.getIsActive());
+        existing.setActive(updated.isActive());
 
         return existing;
     }
