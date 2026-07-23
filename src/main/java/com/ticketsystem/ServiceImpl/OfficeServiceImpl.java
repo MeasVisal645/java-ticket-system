@@ -44,7 +44,7 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     public Mono<OfficeDto> create(OfficeDto officeDto) {
         return officeRepository.save(Office.from(officeDto)
-                        .isActive(true)
+                        .active(true)
                         .createdAt(LocalDateTime.now())
                 .build())
                 .map(OfficeMapper.INSTANCE::toDto);

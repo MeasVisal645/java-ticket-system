@@ -44,7 +44,7 @@ public class TrademarkServiceImpl implements TrademarkService {
     @Override
     public Mono<TrademarkDto> create(TrademarkDto trademarkDto) {
         return trademarkRepository.save(Trademark.from(trademarkDto)
-                        .isActive(true)
+                        .active(true)
                         .createdAt(LocalDateTime.now())
                         .build())
                 .map(TrademarkMapper.INSTANCE::toDto);

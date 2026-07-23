@@ -43,8 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Mono<CategoryDto> create(CategoryDto categoryDto) {
         return categoryRepository.save(Category.from(categoryDto)
-                        .isActive(true)
-                .build())
+                        .active(true)
+                        .build())
                 .map(CategoryMapper.INSTANCE::toDto);
     }
 
