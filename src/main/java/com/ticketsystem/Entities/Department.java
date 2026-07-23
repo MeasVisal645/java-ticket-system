@@ -44,7 +44,6 @@ public class Department {
     public static DepartmentBuilder from(DepartmentDto departmentDto) {
         return Department.builder()
                 .id(departmentDto.getId())
-                .name(departmentDto.getName())
-                .isActive(departmentDto.isActive());
+                .name(departmentDto.getName());
     }
 }
