@@ -15,7 +15,7 @@ public class DepartmentDto {
 
     private Long id;
     private String name;
-    private boolean isActive;
+    private boolean active;
 
     public static Department update(Department existing, DepartmentDto updated) {
         existing.setName(updated.getName());

@@ -14,7 +14,7 @@ public class TrademarkDto {
     private Long id;
     private String name;
     private String fullName;
-    private boolean isActive;
+    private boolean active;
 
     public static Trademark update(Trademark existing, TrademarkDto updated) {
         existing.setName(updated.getName());

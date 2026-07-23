@@ -68,7 +68,7 @@ public class Asset {
     @Column(ASSET_TYPE_COLUMN)
     private String assetType;
     @Column(IS_ACTIVE_COLUMN)
-    private boolean isActive;
+    private boolean active;
     @Column(TRADEMARK_ID_COLUMN)
     private Long trademarkId;
     @Column(OFFICE_ID_COLUMN)
@@ -95,6 +95,7 @@ public class Asset {
                 .other(assetDto.getOther())
                 .assetType(assetDto.getAssetType())
                 .trademarkId(assetDto.getTrademarkId())
-                .officeId(assetDto.getOfficeId());
+                .officeId(assetDto.getOfficeId())
+                .active(assetDto.isActive());
     }
 }

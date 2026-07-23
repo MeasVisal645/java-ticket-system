@@ -1,12 +1,10 @@
 package com.ticketsystem.Dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ticketsystem.Entities.Asset;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jspecify.annotations.NonNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,7 +27,7 @@ public class AssetDto {
     private String user;
     private String other;
     private String assetType;
-    private boolean isActive;
+    private boolean active;
     private Long trademarkId;
     private Long officeId;
 

@@ -14,7 +14,7 @@ public class OfficeDto {
 
     private Long id;
     private String name;
-    private boolean isActive;
+    private boolean active;
     private Long departmentId;
 
     public static Office update(Office existing, OfficeDto updated) {

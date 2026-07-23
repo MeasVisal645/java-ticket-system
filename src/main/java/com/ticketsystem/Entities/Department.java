@@ -33,7 +33,7 @@ public class Department {
     @Column(NAME_COLUMN)
     private String name;
     @Column(IS_ACTIVE_COLUMN)
-    private boolean isActive;
+    private boolean active;
     @Column(CREATED_AT_COLUMN)
     @JsonSerialize(using = DateUtils.class)
     private LocalDateTime createdAt;

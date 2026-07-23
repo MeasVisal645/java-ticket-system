@@ -30,7 +30,7 @@ public class Category {
     @Column(DESCRIPTION_COLUMN)
     private String description;
     @Column(IS_ACTIVE_COLUMN)
-    private boolean isActive;
+    private boolean active;
 
     public static Category.CategoryBuilder from(CategoryDto categoryDto) {
         return Category.builder()
