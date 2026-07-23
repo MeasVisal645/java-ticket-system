@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .pathMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .pathMatchers("/api/v1/auth/**").permitAll()
                         .pathMatchers("/api/v1/ticket-history/latest").permitAll()
+                        .pathMatchers("/api/v1/ticket-history/max-id").permitAll()
                         .pathMatchers(
                                 "/v3/api-docs/**",
                                 "/scalar.html"

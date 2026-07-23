@@ -33,7 +33,12 @@ public class HistoryController {
     @GetMapping("/latest")
     public Mono<ApiResponse<?>> latest(@RequestParam(required = false) Long id) {
         return historyService.latest(id)
-                .collectList()
+                .map(ApiResponse::success);
+    }
+
+    @GetMapping("/max-id")
+    public Mono<ApiResponse<?>> maxId() {
+        return historyService.maxId()
                 .map(ApiResponse::success);
     }
 

@@ -2,6 +2,7 @@ package com.ticketsystem.Service;
 
 import com.ticketsystem.Dto.HistoryDto;
 import com.ticketsystem.Dto.HistoryResponseDto;
+import com.ticketsystem.Dto.LatestHistoryResponse;
 import com.ticketsystem.Entities.Action;
 import com.ticketsystem.Entities.History;
 import com.ticketsystem.Entities.Priority;
@@ -21,5 +22,6 @@ public interface HistoryService {
     Mono<PageResponse<HistoryDto>> findPagination(Integer pageSize, Integer pageNumber, LocalDateTime startDate, LocalDateTime endDate, String search, Status status, Priority priority, Action action);
 
     // Webhook
-    Flux<HistoryResponseDto> latest(Long id);
+    Mono<LatestHistoryResponse> latest(Long id);
+    Mono<Long> maxId();
 }

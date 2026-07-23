@@ -2,6 +2,7 @@ package com.ticketsystem.ServiceImpl;
 
 import com.ticketsystem.Dto.HistoryDto;
 import com.ticketsystem.Dto.HistoryResponseDto;
+import com.ticketsystem.Dto.LatestHistoryResponse;
 import com.ticketsystem.Entities.Action;
 import com.ticketsystem.Entities.History;
 import com.ticketsystem.Entities.Priority;
@@ -24,6 +25,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -84,14 +86,37 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Flux<HistoryResponseDto> latest(Long id) {
-        return r2dbcEntityTemplate
+    public Mono<LatestHistoryResponse> latest(Long id) {
+        Mono<Long> maxIdMono = r2dbcEntityTemplate
+                .select(History.class)
+                .all()
+                .map(History::getId)
+                .reduce(Math::max)
+                .defaultIfEmpty(0L);
+
+        Mono<List<HistoryResponseDto>> itemsMono = r2dbcEntityTemplate
                 .select(History.class)
                 .matching(
                         Query.query(Criteria.where(History.ID_COLUMN).greaterThan(id))
                                 .sort(Sort.by(Sort.Direction.ASC, History.ID_COLUMN))
                 )
                 .all()
-                .map(HistoryMapper.INSTANCE::toResponseDto);
+                .map(HistoryMapper.INSTANCE::toResponseDto)
+                .collectList();
+
+        return Mono.zip(maxIdMono, itemsMono)
+                .map(tuple -> new LatestHistoryResponse(
+                        tuple.getT1(),
+                        tuple.getT2()
+            ));
+    }
+
+    @Override
+    public Mono<Long> maxId() {
+        return r2dbcEntityTemplate.select(History.class)
+                .all()
+                .map(History::getId)
+                .reduce(Math::max)
+                .defaultIfEmpty(0L);
     }
 }
