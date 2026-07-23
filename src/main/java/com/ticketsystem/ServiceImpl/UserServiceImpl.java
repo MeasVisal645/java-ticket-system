@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
                         return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
                     }
 
-                    if (!user.getIsActive()) {
+                    if (!user.isActive()) {
                         return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "User account is inactive"));
                     }
 
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
                 User.from(user)
                         .role(Role.USER)
                         .password(encodedPassword)
-                        .isActive(true)
+                        .active(true)
                         .build()
         )
         .map(UserMapper.INSTANCE::toDto);

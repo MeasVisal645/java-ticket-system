@@ -2,6 +2,7 @@ package com.ticketsystem.ServiceImpl;
 
 import com.ticketsystem.Dto.AssetDto;
 import com.ticketsystem.Entities.Asset;
+import com.ticketsystem.Entities.Ticket;
 import com.ticketsystem.Mapper.AssetMapper;
 import com.ticketsystem.Repository.AssetRepository;
 import com.ticketsystem.Service.AssetService;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -45,11 +47,11 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Mono<AssetDto> create(AssetDto assetDto) {
         return assetRepository.save(Asset.from(assetDto)
-                        .active(true)
-                        .deleted(false)
                         .createdAt(LocalDateTime.now())
+                        .active(true)
                         .build())
                 .map(AssetMapper.INSTANCE::toAssetDTO);
+
     }
 
     @Override
@@ -72,23 +74,27 @@ public class AssetServiceImpl implements AssetService {
     }
 
     @Override
-    public Mono<PageResponse<AssetDto>> findPagination(Integer pageSize, Integer pageNumber, String search, Boolean isActive, String assetType) {
+    public Mono<PageResponse<AssetDto>> findPagination(Integer pageSize, Integer pageNumber, LocalDate startDate, LocalDate endDate, String search, Boolean active, String filter) {
         Criteria criteria = Criteria.empty();
 
-        if (isActive != null) {
-            criteria = criteria.or(Criteria.where(Asset.IS_ACTIVE_COLUMN).is(isActive));
+        if (active != null) {
+            criteria = criteria.or(Criteria.where(Asset.IS_ACTIVE_COLUMN).is(active));
         }
 
-        if (assetType != null && !assetType.isBlank()) {
-            criteria = criteria.or(Criteria.where(Asset.TYPE_COLUMN).is(assetType));
+        if (filter != null && !filter.isBlank()) {
+            criteria = criteria.or(Criteria.where(Asset.ASSET_TYPE_COLUMN).is(filter))
+                    .or(Criteria.where(Asset.TYPE_COLUMN).is(filter));
+        }
+
+        if (startDate != null && endDate != null) {
+            criteria = criteria.and(Asset.PURCHASE_DATE_COLUMN).between(startDate, endDate);
         }
 
         if (search != null && !search.isBlank()) {
             String pattern = "%" + search.trim() + "%";
             Criteria searchCriteria = Criteria
-                    .where(Asset.NAME_COLUMN).like(pattern)
-                    .or(Asset.TYPE_COLUMN).like(pattern)
-                    .or(Asset.BRAND_COLUMN).like(pattern)
+                    .where(Asset.BRAND_COLUMN).like(pattern)
+                    .or(Asset.NAME_COLUMN).like(pattern)
                     .or(Asset.USER_COLUMN).like(pattern)
                     .or(Asset.CODE_COLUMN).like(pattern);
             criteria = criteria.and(searchCriteria);
