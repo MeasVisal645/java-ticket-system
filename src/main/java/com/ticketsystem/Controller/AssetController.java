@@ -10,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/v1/asset")
 @AllArgsConstructor
@@ -53,16 +55,20 @@ public class AssetController {
     public Mono<ApiResponse<PageResponse<?>>> findPagination(
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Integer pageNumber,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Boolean isActive,
-            @RequestParam(required = false) String assetType
+            @RequestParam(required = false) String filter
     ) {
         return assetService.findPagination(
                         pageSize,
                         pageNumber,
+                        startDate,
+                        endDate,
                         search,
                         isActive,
-                        assetType)
+                        filter)
                 .map(ApiResponse::success);
     }
 
