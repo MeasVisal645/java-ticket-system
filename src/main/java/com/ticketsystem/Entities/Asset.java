@@ -95,7 +95,6 @@ public class Asset {
                 .other(assetDto.getOther())
                 .assetType(assetDto.getAssetType())
                 .trademarkId(assetDto.getTrademarkId())
-                .officeId(assetDto.getOfficeId())
-                .active(assetDto.isActive());
+                .officeId(assetDto.getOfficeId());
     }
 }

@@ -40,7 +40,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Mono<AssetDto> findById(Long id) {
         return assetRepository.findById(id)
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Trademark Not Found")))
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Asset Not Found")))
                 .map(AssetMapper.INSTANCE::toAssetDTO);
     }
 
