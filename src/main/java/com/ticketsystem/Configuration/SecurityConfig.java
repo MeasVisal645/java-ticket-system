@@ -1,5 +1,6 @@
 package com.ticketsystem.Configuration;
 
+import com.ticketsystem.Exception.GlobalExceptionHandler;
 import com.ticketsystem.Security.JwtAuthenticationFilter;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
@@ -38,15 +39,11 @@ public class SecurityConfig {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(
-                                (exchange, e) -> {
-                                    exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                                    return exchange.getResponse().setComplete();
-                                })
+                                (exchange, e) -> GlobalExceptionHandler.writeErrorResponse(
+                                        exchange, HttpStatus.UNAUTHORIZED, "Unauthorized"))
                         .accessDeniedHandler(
-                                (exchange, e) -> {
-                                    exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
-                                    return exchange.getResponse().setComplete();
-                                })
+                                (exchange, e) -> GlobalExceptionHandler.writeErrorResponse(
+                                        exchange, HttpStatus.FORBIDDEN, "Access Denied"))
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeExchange(exchanges -> exchanges
@@ -54,8 +51,8 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
                         .pathMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .pathMatchers("/api/v1/auth/**").permitAll()
-                        .pathMatchers("/api/v1/ticket-history/latest").permitAll()
-                        .pathMatchers("/api/v1/ticket-history/max-id").permitAll()
+//                        .pathMatchers("/api/v1/ticket-history/latest").permitAll()
+//                        .pathMatchers("/api/v1/ticket-history/max-id").permitAll()
                         .pathMatchers(
                                 "/v3/api-docs/**",
                                 "/scalar.html"

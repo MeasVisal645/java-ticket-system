@@ -3,7 +3,9 @@ package com.ticketsystem.Exception;
 import com.ticketsystem.Utils.ApiResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -12,7 +14,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,6 +36,27 @@ public class GlobalExceptionHandler {
                         ex.getReason(),
                         null
                 ));
+    }
+
+    public static Mono<Void> writeErrorResponse(
+            ServerWebExchange exchange,
+            HttpStatus status,
+            String message
+    ) {
+        var response = exchange.getResponse();
+        response.setStatusCode(status);
+        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+        String json = String.format(
+                "{\"status\":\"%d %s\",\"message\":\"%s\",\"data\":null}",
+                status.value(),
+                status.name(),
+                message
+        );
+
+        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+        DataBuffer buffer = response.bufferFactory().wrap(bytes);
+        return response.writeWith(Mono.just(buffer));
     }
 
     @ExceptionHandler(AuthenticationException.class)
