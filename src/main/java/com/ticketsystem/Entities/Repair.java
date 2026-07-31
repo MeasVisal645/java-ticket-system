@@ -1,5 +1,6 @@
 package com.ticketsystem.Entities;
 
+import com.ticketsystem.Dto.RepairDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,4 +33,11 @@ public class Repair {
     private Long assetId;
     @Column(CREATED_AT_COLUMN)
     private LocalDateTime createdAt;
+
+    public static RepairBuilder from(RepairDto repairDto) {
+        return Repair.builder()
+                .id(repairDto.getId())
+                .ticketId(repairDto.getTicketId())
+                .assetId(repairDto.getAssetId());
+    }
 }
