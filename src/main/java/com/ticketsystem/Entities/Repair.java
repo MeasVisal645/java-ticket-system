@@ -20,9 +20,9 @@ public class Repair {
 
     public static final String label =  "repair";
     public static final String ID_COLUMN  = "id";
-    public static final String TICKET_ID_COLUMN = "ticket_id";
-    public static final String ASSET_ID_COLUMN = "asset_id";
-    public static final String CREATED_AT_COLUMN = "created_at";
+    public static final String TICKET_ID_COLUMN = "ticketId";
+    public static final String ASSET_ID_COLUMN = "assetId";
+    public static final String CREATED_AT_COLUMN = "createdAt";
 
     @Id
     @Column(ID_COLUMN)
@@ -34,10 +34,10 @@ public class Repair {
     @Column(CREATED_AT_COLUMN)
     private LocalDateTime createdAt;
 
-    public static RepairBuilder from(RepairDto repairDto) {
+    public static RepairBuilder from(RepairDto dto) {
         return Repair.builder()
-                .id(repairDto.getId())
-                .ticketId(repairDto.getTicketId())
-                .assetId(repairDto.getAssetId());
+                .id(dto.getId())
+                .ticketId(dto.getTicketId())
+                .assetId(dto.getAssetId());
     }
 }
