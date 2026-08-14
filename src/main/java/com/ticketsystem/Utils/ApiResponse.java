@@ -1,8 +1,11 @@
 package com.ticketsystem.Utils;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 
 public record ApiResponse<T>(
+
+        @Schema(allowableValues = {"200 OK", "201 CREATED", "400 BAD_REQUEST", "401 UNAUTHORIZED", "403 FORBIDDEN", "404 NOT_FOUND", "500 INTERNAL_SERVER_ERROR"})
         HttpStatus status,
         String message,
         T data
