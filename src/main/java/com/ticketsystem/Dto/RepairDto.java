@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class RepairDto {
 
     private Long id;
+    private String repairNo;
     private Long assetId;
     private Long ticketId;
     @JsonSerialize(using = DateUtils.class)

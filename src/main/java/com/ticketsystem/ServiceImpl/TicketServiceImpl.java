@@ -34,7 +34,7 @@ public class TicketServiceImpl implements TicketService {
     private final AttachmentRepository attachmentRepository;
     private final CommentRepository commentRepository;
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
-    private final TicketNoGenerator  ticketNoGenerator;
+    private final GeneratorUtils generatorUtils;
 
     @Override
     public Flux<TicketDto> findAll() {
@@ -51,7 +51,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Mono<TicketDto> create(TicketDto ticketDto) {
-        return ticketNoGenerator.generateTicketNo()
+        return generatorUtils.generateTicketNo()
                 .flatMap(ticketNo ->
                         ReactiveSecurityContextHolder.getContext()
                                 .map(ctx -> ctx.getAuthentication().getName())
